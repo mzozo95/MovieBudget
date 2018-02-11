@@ -4,9 +4,9 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.majlathtech.moviebudget.R;
 import com.majlathtech.moviebudget.di.Network;
 import com.majlathtech.moviebudget.network.interactor.MovieInteractor;
+import com.majlathtech.moviebudget.network.model.MovieDetail;
 import com.majlathtech.moviebudget.network.model.MovieResponse;
 import com.majlathtech.moviebudget.ui.RxPresenter;
 
@@ -46,6 +46,30 @@ public class MovieListPresenter extends RxPresenter<MovieListScreen> {
                         //Todo fetch budget parameter
                         if (screen!=null){
                             screen.showMovies(movieResponse.getResults());
+                        }
+                        getDetails(2362);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        throwable.printStackTrace();
+                        if (screen!=null){
+                            screen.showError("NetworkError");
+                        }
+                    }
+                }));
+    }
+
+    public void getDetails(int id) {
+        attachSubscription(movieInteractor.getMovieDetails(id)
+                .subscribeOn(networkScheduler)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<MovieDetail>() {
+                    @Override
+                    public void accept(MovieDetail movieResponse) throws Exception {
+                        Log.d("down",""+ movieResponse.getBudget());
+                        if (screen!=null){
+                            //Todo
                         }
                     }
                 }, new Consumer<Throwable>() {

@@ -3,7 +3,7 @@ package com.majlathtech.moviebudget.network.model;
 public class MovieDetail {
     private int id;
     private int budget;
-    private int title;
+    private String title;
 
     public int getId() {
         return id;
@@ -21,11 +21,11 @@ public class MovieDetail {
         this.budget = budget;
     }
 
-    public int getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(int title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 }

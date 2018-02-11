@@ -1,6 +1,7 @@
 package com.majlathtech.moviebudget.network.interactor;
 
 import com.majlathtech.moviebudget.network.api.MovieApi;
+import com.majlathtech.moviebudget.network.model.MovieDetail;
 import com.majlathtech.moviebudget.network.model.MovieResponse;
 
 import javax.inject.Inject;
@@ -20,5 +21,9 @@ public class MovieInteractor {
 
     public Observable<MovieResponse> searchMovie(String searchKey){
         return movieApi.searchMovie(MovieApi.API_KEY, searchKey, MovieApi.LANGUAGE);
+    }
+
+    public Observable<MovieDetail> getMovieDetails(int movie_id){
+        return movieApi.getMovieDetails(movie_id, MovieApi.API_KEY, MovieApi.LANGUAGE);
     }
 }
