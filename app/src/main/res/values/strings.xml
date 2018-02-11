@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MovieBudget</string>
+    <string name="please_type_a_film_title_here">Please type a film title here</string>
+    <string name="search">Search</string>
 </resources>
