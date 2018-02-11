@@ -19,6 +19,6 @@ public class MovieInteractor {
     }
 
     public Observable<MovieResponse> searchMovie(String searchKey){
-        return movieApi.searchMovie(MovieApi.API_KEY, searchKey);
+        return movieApi.searchMovie(MovieApi.API_KEY, searchKey, MovieApi.LANGUAGE);
     }
 }

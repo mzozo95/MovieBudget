@@ -10,8 +10,10 @@ import retrofit2.http.Query;
 public interface MovieApi {
     String ENDPOINT_URL = NetworkConfig.BASE_URL;
     String API_KEY = NetworkConfig.API_KEY;
+    String LANGUAGE = "en-US";
 
-    @GET
+    @GET("/3/search/movie")
     Observable<MovieResponse> searchMovie(@Query("api_key") String APP_ID,
-                                          @Query("query") String unit);
+                                          @Query("query") String unit,
+                                          @Query("language") String language);
 }
