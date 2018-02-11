@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.majlathtech.moviebudget.R;
 import com.majlathtech.moviebudget.network.model.Movie;
+import com.majlathtech.moviebudget.network.model.MovieDetail;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements MovieListScreen{
     }
 
     @Override
-    public void showMovies(List<Movie> movieList) {
+    public void showMovies(List<MovieDetail> movieList) {
         Log.d(this.getLocalClassName(), movieList.toString());
     }
 
