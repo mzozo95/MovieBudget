@@ -19,7 +19,7 @@ public class MovieInteractor {
         injector.inject(this);
     }
 
-    public Observable<MovieResponse> searchMovie(String searchKey){
+    public Observable<MovieResponse> searchMovie(String searchKey){//Todo: paging
         return movieApi.searchMovie(MovieApi.API_KEY, searchKey, MovieApi.LANGUAGE);
     }
 
