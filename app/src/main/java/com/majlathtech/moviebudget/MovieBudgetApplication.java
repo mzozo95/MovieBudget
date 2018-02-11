@@ -3,6 +3,7 @@ package com.majlathtech.moviebudget;
 import android.app.Application;
 
 import com.facebook.stetho.Stetho;
+import com.majlathtech.moviebudget.network.NetworkModule;
 import com.majlathtech.moviebudget.ui.UIModule;
 
 public class MovieBudgetApplication extends Application {
@@ -13,7 +14,7 @@ public class MovieBudgetApplication extends Application {
         super.onCreate();
         Stetho.initializeWithDefaults(this);
 
-        injector = DaggerAppComponent.builder().uIModule(new UIModule(this)).build();
+        injector = DaggerAppComponent.builder().uIModule(new UIModule(this)).networkModule(new NetworkModule(this)).build();
     }
 
 }
