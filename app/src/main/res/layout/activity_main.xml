@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.majlathtech.moviebudget.ui.movielist.MainActivity">
+    tools:context="com.majlathtech.moviebudget.ui.main.MainActivity">
 
     <fragment android:name="com.majlathtech.moviebudget.ui.movielist.MovieListFragment"
         android:id="@+id/movie_fragment"

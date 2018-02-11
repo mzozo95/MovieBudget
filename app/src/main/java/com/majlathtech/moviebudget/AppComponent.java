@@ -3,7 +3,6 @@ package com.majlathtech.moviebudget;
 import com.majlathtech.moviebudget.network.NetworkModule;
 import com.majlathtech.moviebudget.network.interactor.MovieInteractor;
 import com.majlathtech.moviebudget.ui.UIModule;
-import com.majlathtech.moviebudget.ui.movielist.MainActivity;
 import com.majlathtech.moviebudget.ui.movielist.MovieListFragment;
 import com.majlathtech.moviebudget.ui.movielist.MovieListPresenter;
 
@@ -18,8 +17,5 @@ public interface AppComponent {
 
     void inject(MovieListPresenter movieListPresenter);
 
-    void inject(MainActivity mainActivity);
-
     void inject(MovieListFragment movieListFragment);
-
 }

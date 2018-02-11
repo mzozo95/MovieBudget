@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.majlathtech.moviebudget.R;
 import com.majlathtech.moviebudget.di.Network;
 import com.majlathtech.moviebudget.network.interactor.MovieInteractor;
 import com.majlathtech.moviebudget.network.model.Movie;
@@ -78,32 +79,9 @@ public class MovieListPresenter extends RxPresenter<MovieListScreen> {
                         public void accept(Throwable throwable) throws Exception {
                             throwable.printStackTrace();
                             if (screen!=null){
-                                screen.showError("NetworkError");
+                                screen.showError(context.getString(R.string.unexpected_error_happened));
                             }
                         }
-                }));
-    }
-
-    public void getDetails(int id) {
-        attachSubscription(movieInteractor.getMovieDetails(id)
-                .subscribeOn(networkScheduler)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<MovieDetail>() {
-                    @Override
-                    public void accept(MovieDetail movieResponse) throws Exception {
-                        Log.d("down", "" + movieResponse.getBudget());
-                        if (screen != null) {
-                            //Todo
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        throwable.printStackTrace();
-                        if (screen != null) {
-                            screen.showError("NetworkError");
-                        }
-                    }
                 }));
     }
 }

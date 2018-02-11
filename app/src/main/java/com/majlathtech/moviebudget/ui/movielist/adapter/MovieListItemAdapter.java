@@ -16,11 +16,18 @@ import com.majlathtech.moviebudget.network.util.NetworkUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MovieListItemAdapter extends RecyclerView.Adapter<MovieListItemAdapter.MovieViewHolder> {
-    private List<MovieDetail> rList = new ArrayList<>();
+    private List<MovieDetail> rList = new ArrayList<>();//Todo set/hashmap would be better
     private Context context;
 
     private MovieListItemAdapter() {
+    }
+
+    public void setListItems(List<MovieDetail> list){
+        rList = list;
     }
 
     public MovieListItemAdapter(List<MovieDetail> r, Context context) {
@@ -42,23 +49,25 @@ public class MovieListItemAdapter extends RecyclerView.Adapter<MovieListItemAdap
     @Override
     public void onBindViewHolder(final MovieViewHolder holder, int position) {
         final MovieDetail result = rList.get(position);
-        holder.tvTitle.setText("" + result.getTitle());
-        holder.tvBudget.setText("" + result.getBudget() + "$");
+        holder.tvTitle.setText(result.getTitle());
+        holder.tvBudget.setText(String.format(context.getString(R.string.money_format), result.getBudget()));
         Glide.with(context)
                 .load(NetworkUtil.getPosterImageUrl(result))
-                .into(holder.ivPoster);
+                .into(holder.ivPoster);//Todo set up placeholder and error img
     }
 
     public static class MovieViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.tvTitle)
         TextView tvTitle;
+        @BindView(R.id.tvBudget)
         TextView tvBudget;
+        @BindView(R.id.ivPoster)
         ImageView ivPoster;
 
         public MovieViewHolder(View itemView) {
             super(itemView);
-            tvTitle = itemView.findViewById(R.id.tvTitle);
-            tvBudget = itemView.findViewById(R.id.tvBudget);
-            ivPoster = itemView.findViewById(R.id.ivPoster);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

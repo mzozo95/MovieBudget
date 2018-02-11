@@ -1,4 +1,4 @@
-package com.majlathtech.moviebudget.ui.movielist;
+package com.majlathtech.moviebudget.ui.main;
 
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -15,29 +15,10 @@ import javax.inject.Inject;
 
 import static com.majlathtech.moviebudget.MovieBudgetApplication.injector;
 
-public class MainActivity extends FragmentActivity implements MovieListScreen{
-    @Inject
-    MovieListPresenter presenter;
-
-
-
+public class MainActivity extends FragmentActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        injector.inject(this);
-       // presenter.attachScreen(this);
-       // presenter.searchMovie("WestWorld");
-    }
-
-    @Override
-    public void showMovies(List<MovieDetail> movieList) {
-        Log.d(this.getLocalClassName(), movieList.toString());
-    }
-
-    @Override
-    public void showError(String errorMsg) {
-        Log.d(this.getLocalClassName(), errorMsg);
     }
 }

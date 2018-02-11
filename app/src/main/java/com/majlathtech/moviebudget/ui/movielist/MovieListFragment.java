@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.majlathtech.moviebudget.R;
 import com.majlathtech.moviebudget.network.model.MovieDetail;
@@ -30,6 +32,8 @@ public class MovieListFragment extends Fragment implements MovieListScreen {
     @Inject
     MovieListPresenter presenter;
 
+    MovieListItemAdapter ma;
+
     @BindView(R.id.etSearch)
     EditText etSearch;
     @BindView(R.id.btnSearch)
@@ -37,6 +41,8 @@ public class MovieListFragment extends Fragment implements MovieListScreen {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     Unbinder unbinder;
+    @BindView(R.id.pbDownload)
+    ProgressBar pbDownload;
 
     @Inject
     public MovieListFragment() {
@@ -78,15 +84,23 @@ public class MovieListFragment extends Fragment implements MovieListScreen {
 
     @Override
     public void showMovies(List<MovieDetail> movieList) {
-        if (movieList != null) {
-            MovieListItemAdapter ma = new MovieListItemAdapter(movieList, getActivity());
+        pbDownload.setVisibility(View.GONE);
+        if (movieList != null && movieList.size() != 0) {
+            Toast.makeText(getActivity(), R.string.list_downloaded, Toast.LENGTH_LONG).show();
+            if (ma == null) {
+                ma = new MovieListItemAdapter(movieList, getActivity());
+            }
+            ma.setListItems(movieList);
             recyclerView.setAdapter(ma);
+        } else {
+            showError(getString(R.string.no_content_available));
         }
     }
 
     @Override
     public void showError(String errorMsg) {
-
+        Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
+        pbDownload.setVisibility(View.GONE);
     }
 
     @Override
@@ -97,8 +111,11 @@ public class MovieListFragment extends Fragment implements MovieListScreen {
 
     @OnClick(R.id.btnSearch)
     public void onViewClicked() {
+        pbDownload.setVisibility(View.VISIBLE);
         presenter.searchMovie(etSearch.getText().toString());
-        MovieListItemAdapter ma = new MovieListItemAdapter(new ArrayList<MovieDetail>(), getActivity());
-        recyclerView.setAdapter(ma);
+        if (ma != null) {
+            ma.setListItems(new ArrayList<MovieDetail>());
+            ma.notifyDataSetChanged();
+        }
     }
 }

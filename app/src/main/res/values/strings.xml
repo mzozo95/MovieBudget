@@ -2,4 +2,8 @@
     <string name="app_name">MovieBudget</string>
     <string name="please_type_a_film_title_here">Please type a film title here</string>
     <string name="search">Search</string>
+    <string name="money_format">%d$</string>
+    <string name="no_content_available">No content available!</string>
+    <string name="list_downloaded">List downloaded!</string>
+    <string name="unexpected_error_happened">Unexpected error happened!</string>
 </resources>
