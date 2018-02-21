@@ -38,7 +38,6 @@ public class MovieListPresenter extends RxPresenter<MovieListScreen> {
         this.context = context;
         this.movieInteractor=movieInteractor;
         this.networkScheduler=networkScheduler;
-        injector.inject(this);
     }
 
     public void searchMovie(final String movieTitle) {
@@ -56,7 +55,7 @@ public class MovieListPresenter extends RxPresenter<MovieListScreen> {
                         return movieInteractor.getMovieDetails(movie.getId());// and returns the corresponding getMovieDetailObservable for the specific ID
                     }
                 }).subscribeOn(networkScheduler)
-                .toList()//collect the unique items to a list
+                .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<MovieDetail>>() {//Consume the list
                     @Override

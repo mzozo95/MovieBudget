@@ -14,8 +14,5 @@ import dagger.Component;
 @Component(modules = {UIModule.class, NetworkModule.class})
 public interface AppComponent {
     void inject(MovieInteractor movieInteractor);
-
-    void inject(MovieListPresenter movieListPresenter);
-
     void inject(MovieListFragment movieListFragment);
 }
