@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.majlathtech.moviebudget.network.api.MovieApi;
+import com.majlathtech.moviebudget.network.interceptor.HeaderInterceptor;
 import com.readystatesoftware.chuck.ChuckInterceptor;
 
 import javax.inject.Singleton;
@@ -29,13 +30,14 @@ public class NetworkModule {
     @Singleton
     public Retrofit provideRetrofit() {
         OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new HeaderInterceptor())
                 .addNetworkInterceptor(new StethoInterceptor())
                 .addInterceptor(new ChuckInterceptor(context))
                 .build();
 
         return new Retrofit.Builder()
                 .client(client)
-                .baseUrl(MovieApi.ENDPOINT_URL)
+                .baseUrl(NetworkConfig.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();

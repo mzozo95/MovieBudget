@@ -10,17 +10,9 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface MovieApi {
-    String ENDPOINT_URL = NetworkConfig.BASE_URL;
-    String API_KEY = NetworkConfig.API_KEY;
-    String LANGUAGE = "en-US";
-
     @GET("/3/search/movie")
-    Observable<MovieResponse> searchMovie(@Query("api_key") String APP_ID,
-                                          @Query("query") String unit,
-                                          @Query("language") String language);
+    Observable<MovieResponse> searchMovie(@Query("query") String unit);
 
     @GET("/3/movie/{movie_id}")
-    Observable<MovieDetail> getMovieDetails(@Path("movie_id") int movie_id,
-                                            @Query("api_key") String APP_ID,
-                                            @Query("language") String language);
+    Observable<MovieDetail> getMovieDetails(@Path("movie_id") int movie_id);
 }

@@ -25,13 +25,13 @@ import io.reactivex.functions.Function;
 import static com.majlathtech.moviebudget.MovieBudgetApplication.injector;
 
 public class MovieListPresenter extends RxPresenter<MovieListScreen> {
-    public static final String TAG = "MovieListPresenter";
+    private static final String TAG = "MovieListPresenter";
 
     private final Context context;
     private final MovieInteractor movieInteractor;
 
     @Network
-    Scheduler networkScheduler;
+    private Scheduler networkScheduler;
 
     @Inject
     public MovieListPresenter(Context context, @Network Scheduler networkScheduler, MovieInteractor movieInteractor) {

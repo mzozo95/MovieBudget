@@ -20,10 +20,10 @@ public class MovieInteractor {
     }
 
     public Observable<MovieResponse> searchMovie(String searchKey){//Todo: paging
-        return movieApi.searchMovie(MovieApi.API_KEY, searchKey, MovieApi.LANGUAGE);
+        return movieApi.searchMovie(searchKey);
     }
 
     public Observable<MovieDetail> getMovieDetails(int movie_id){
-        return movieApi.getMovieDetails(movie_id, MovieApi.API_KEY, MovieApi.LANGUAGE);
+        return movieApi.getMovieDetails(movie_id);
     }
 }
