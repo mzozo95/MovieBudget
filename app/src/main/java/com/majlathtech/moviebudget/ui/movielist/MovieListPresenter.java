@@ -27,21 +27,17 @@ import static com.majlathtech.moviebudget.MovieBudgetApplication.injector;
 public class MovieListPresenter extends RxPresenter<MovieListScreen> {
     public static final String TAG = "MovieListPresenter";
 
-    @Inject
-    Context context;
+    private final Context context;
+    private final MovieInteractor movieInteractor;
 
-    @Inject
-    MovieInteractor movieInteractor;
-
-    @Inject
-    Gson gson;
-
-    @Inject
     @Network
     Scheduler networkScheduler;
 
     @Inject
-    public MovieListPresenter() {
+    public MovieListPresenter(Context context, @Network Scheduler networkScheduler, MovieInteractor movieInteractor) {
+        this.context = context;
+        this.movieInteractor=movieInteractor;
+        this.networkScheduler=networkScheduler;
         injector.inject(this);
     }
 

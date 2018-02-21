@@ -44,7 +44,6 @@ public class MovieListFragment extends Fragment implements MovieListScreen {
     @BindView(R.id.pbDownload)
     ProgressBar pbDownload;
 
-    @Inject
     public MovieListFragment() {
         injector.inject(this);
     }
