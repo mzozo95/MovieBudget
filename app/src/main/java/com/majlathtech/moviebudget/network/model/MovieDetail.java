@@ -1,6 +1,8 @@
 package com.majlathtech.moviebudget.network.model;
 
-public class MovieDetail {
+import com.majlathtech.moviebudget.ui.composite.model.Listable;
+
+public class MovieDetail implements Listable{
     private int id;
     private int budget;
     private String poster_path;

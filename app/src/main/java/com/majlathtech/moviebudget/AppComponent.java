@@ -3,6 +3,7 @@ package com.majlathtech.moviebudget;
 import com.majlathtech.moviebudget.network.NetworkModule;
 import com.majlathtech.moviebudget.network.interactor.MovieInteractor;
 import com.majlathtech.moviebudget.ui.UIModule;
+import com.majlathtech.moviebudget.ui.movielist.MovieListCompositeFragment;
 import com.majlathtech.moviebudget.ui.movielist.MovieListFragment;
 import com.majlathtech.moviebudget.ui.movielist.MovieListPresenter;
 
@@ -15,4 +16,5 @@ import dagger.Component;
 public interface AppComponent {
     void inject(MovieInteractor movieInteractor);
     void inject(MovieListFragment movieListFragment);
+    void inject(MovieListCompositeFragment movieListCompositeFragment);
 }
