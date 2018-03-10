@@ -20,6 +20,9 @@ import com.majlathtech.moviebudget.ui.composite.model.Listable;
 import com.majlathtech.moviebudget.ui.movielist.adapter.AllAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -43,9 +46,10 @@ public class MovieListCompositeFragment extends Fragment implements MovieListScr
     Button btnSearch;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
-    Unbinder unbinder;
     @BindView(R.id.pbDownload)
     ProgressBar pbDownload;
+
+    Unbinder unbinder;
 
     public MovieListCompositeFragment() {
         injector.inject(this);
@@ -89,18 +93,25 @@ public class MovieListCompositeFragment extends Fragment implements MovieListScr
         pbDownload.setVisibility(View.GONE);
         if (movieList != null && movieList.size() != 0) {
             Toast.makeText(getActivity(), R.string.list_downloaded, Toast.LENGTH_LONG).show();
-
             List<Listable> listableList = new ArrayList<>();
+
+            Collections.sort(movieList, new Comparator<MovieDetail>() {
+                @Override
+                public int compare(MovieDetail movieDetail, MovieDetail t1) {
+                    return t1.getBudget() - movieDetail.getBudget();
+                }
+            });
+
             listableList.addAll(movieList);
             listableList.add(0, new Header("My First header"));
             listableList.add(2, new Header("SecondHeader"));
 
-
             if (allAdapter == null) {
-                allAdapter = new AllAdapter(getActivity(),listableList);
+                allAdapter = new AllAdapter(getActivity(), listableList);
+                recyclerView.setAdapter(allAdapter);
+            } else {
+                allAdapter.setItems(listableList);
             }
-
-            recyclerView.setAdapter(allAdapter);
         } else {
             showError(getString(R.string.no_content_available));
         }
@@ -123,9 +134,7 @@ public class MovieListCompositeFragment extends Fragment implements MovieListScr
         pbDownload.setVisibility(View.VISIBLE);
         presenter.searchMovie(etSearch.getText().toString());
         if (allAdapter != null) {
-            //allAdapter.setListItems(new ArrayList<MovieDetail>());
             allAdapter.deleteList();
-            allAdapter.notifyDataSetChanged();
         }
     }
 }

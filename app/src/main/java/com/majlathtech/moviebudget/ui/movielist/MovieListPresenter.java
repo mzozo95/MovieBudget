@@ -12,11 +12,14 @@ import com.majlathtech.moviebudget.network.model.MovieDetail;
 import com.majlathtech.moviebudget.network.model.MovieResponse;
 import com.majlathtech.moviebudget.ui.RxPresenter;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
@@ -54,7 +57,17 @@ public class MovieListPresenter extends RxPresenter<MovieListScreen> {
                     public Observable<MovieDetail> apply(Movie movie) {
                         return movieInteractor.getMovieDetails(movie.getId());// and returns the corresponding getMovieDetailObservable for the specific ID
                     }
-                }).subscribeOn(networkScheduler)
+                }).concatMapIterable(new Function<MovieDetail, Iterable<MovieDetail>>() {
+                    @Override
+                    public Iterable<MovieDetail> apply(MovieDetail movieDetail) throws Exception {
+                        List<MovieDetail>  list = new ArrayList<>();
+                        for (int i = 0; i < 2; i++) {
+                            list.add(movieDetail);
+                        }
+                        return list;
+                    }
+                })
+                .subscribeOn(networkScheduler)
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<MovieDetail>>() {//Consume the list

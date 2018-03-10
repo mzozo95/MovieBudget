@@ -22,8 +22,14 @@ public class AllAdapter extends CompositeAdapter<Listable> {
         addAdapterDelegate(new HeaderAdapterDelegate(context, this));
     }
 
+    public void setItems(List<Listable> newList){
+        this.listables = newList;
+        notifyDataSetChanged();
+    }
+
     public void deleteList(){
         this.listables = new ArrayList<>();
+        notifyDataSetChanged();
     }
 
     @Override
