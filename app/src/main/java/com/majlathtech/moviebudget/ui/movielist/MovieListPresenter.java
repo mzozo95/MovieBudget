@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.majlathtech.moviebudget.R;
 import com.majlathtech.moviebudget.di.Network;
+import com.majlathtech.moviebudget.network.api.MovieApi;
 import com.majlathtech.moviebudget.network.interactor.MovieInteractor;
 import com.majlathtech.moviebudget.network.model.Movie;
 import com.majlathtech.moviebudget.network.model.MovieDetail;
@@ -24,53 +25,29 @@ import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.majlathtech.moviebudget.MovieBudgetApplication.injector;
 
 public class MovieListPresenter extends RxPresenter<MovieListScreen> {
-    private static final String TAG = "MovieListPresenter";
+    private
+    static final String TAG = "MovieListPresenter";
 
     private final Context context;
     private final MovieInteractor movieInteractor;
+    private MovieApi movieApi;
 
-    @Network
-    private Scheduler networkScheduler;
 
     @Inject
-    public MovieListPresenter(Context context, @Network Scheduler networkScheduler, MovieInteractor movieInteractor) {
+    public MovieListPresenter(Context context, MovieInteractor movieInteractor, MovieApi movieApi) {
         this.context = context;
-        this.movieInteractor=movieInteractor;
-        this.networkScheduler=networkScheduler;
+        this.movieInteractor = movieInteractor;
+        this.movieApi = movieApi;
     }
 
     public void searchMovie(final String movieTitle) {
-        attachSubscription(
-                movieInteractor.searchMovie(movieTitle)
-                .flatMap(new Function<MovieResponse, Observable<Movie>>() {
-                    @Override
-                    public Observable<Movie> apply(MovieResponse movieResponse) throws Exception {
-                        return Observable.fromIterable(movieResponse.getResults());// flatMap - to return details one by one from SearchListResponse
-                    }}
-                 )
-                .flatMap(new Function<Movie, Observable<MovieDetail>>() {
-                    @Override
-                    public Observable<MovieDetail> apply(Movie movie) {
-                        return movieInteractor.getMovieDetails(movie.getId());// and returns the corresponding getMovieDetailObservable for the specific ID
-                    }
-                }).concatMapIterable(new Function<MovieDetail, Iterable<MovieDetail>>() {
-                    @Override
-                    public Iterable<MovieDetail> apply(MovieDetail movieDetail) throws Exception {
-                        List<MovieDetail>  list = new ArrayList<>();
-                        for (int i = 0; i < 2; i++) {
-                            list.add(movieDetail);
-                        }
-                        return list;
-                    }
-                })
-                .subscribeOn(networkScheduler)
-                .toList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<MovieDetail>>() {//Consume the list
+        attachSubscription(movieInteractor.performRequest(movieApi.searchMovie(movieTitle))
+                .subscribe(new Consumer<List<MovieDetail>>() {
                     @Override
                     public void accept(List<MovieDetail> movieDetails) throws Exception {
                         for (MovieDetail m:movieDetails) {
