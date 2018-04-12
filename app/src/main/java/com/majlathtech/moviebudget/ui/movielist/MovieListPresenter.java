@@ -3,31 +3,17 @@ package com.majlathtech.moviebudget.ui.movielist;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.majlathtech.moviebudget.R;
-import com.majlathtech.moviebudget.di.Network;
 import com.majlathtech.moviebudget.network.api.MovieApi;
 import com.majlathtech.moviebudget.network.interactor.MovieInteractor;
-import com.majlathtech.moviebudget.network.model.Movie;
 import com.majlathtech.moviebudget.network.model.MovieDetail;
-import com.majlathtech.moviebudget.network.model.MovieResponse;
 import com.majlathtech.moviebudget.ui.RxPresenter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
-
-import static com.majlathtech.moviebudget.MovieBudgetApplication.injector;
 
 public class MovieListPresenter extends RxPresenter<MovieListScreen> {
     private

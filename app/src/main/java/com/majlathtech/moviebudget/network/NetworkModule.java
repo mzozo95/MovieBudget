@@ -40,8 +40,6 @@ public class NetworkModule {
     public Retrofit provideRetrofit() {
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new HeaderInterceptor())
-                .addNetworkInterceptor(new StethoInterceptor())
-                .addInterceptor(new ChuckInterceptor(context))
                 .addInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
@@ -53,6 +51,8 @@ public class NetworkModule {
                     }
                 })
                 .cache(new Cache(new File(context.getCacheDir(), "apiResponses"), 5 * 1024 * 1024))
+                .addInterceptor(new ChuckInterceptor(context))
+                .addNetworkInterceptor(new StethoInterceptor())
                 .build();
 
         return new Retrofit.Builder()
