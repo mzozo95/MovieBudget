@@ -92,15 +92,8 @@ public class MovieListCompositeFragment extends Fragment implements MovieListScr
         pbDownload.setVisibility(View.GONE);
         if (movieList != null && movieList.size() != 0) {
             Toast.makeText(getActivity(), R.string.list_downloaded, Toast.LENGTH_LONG).show();
+
             List<Listable> listableList = new ArrayList<>();
-
-            Collections.sort(movieList, new Comparator<MovieDetail>() {
-                @Override
-                public int compare(MovieDetail movieDetail, MovieDetail t1) {
-                    return t1.getBudget() - movieDetail.getBudget();
-                }
-            });
-
             listableList.addAll(movieList);
             listableList.add(0, new Header("My First header"));
             listableList.add(2, new Header("SecondHeader"));

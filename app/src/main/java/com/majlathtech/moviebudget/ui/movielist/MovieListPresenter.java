@@ -1,7 +1,6 @@
 package com.majlathtech.moviebudget.ui.movielist;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.majlathtech.moviebudget.R;
 import com.majlathtech.moviebudget.network.api.MovieApi;
@@ -33,14 +32,11 @@ public class MovieListPresenter extends RxPresenter<MovieListScreen> {
 
     public void searchMovie(final String movieTitle) {
         attachSubscription(movieInteractor.performRequest(movieApi.searchMovie(movieTitle))
+                //todo Log?
+                //.map(new Function<List<MovieDetail>, List>() {}) //Todo add headers in a map
                 .subscribe(new Consumer<List<MovieDetail>>() {
                     @Override
                     public void accept(List<MovieDetail> movieDetails) throws Exception {
-                        for (MovieDetail m:movieDetails) {
-                            Log.d(TAG, "budget: "+m.getBudget());
-                            Log.d(TAG, "getPoster_path: "+m.getPoster_path());
-                            Log.d(TAG, "getTitle: "+m.getTitle());
-                        }
                         if (screen!=null){
                             screen.showMovies(movieDetails);
                         }
