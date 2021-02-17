@@ -15,40 +15,34 @@ import javax.inject.Inject;
 import io.reactivex.functions.Consumer;
 
 public class MovieListPresenter extends RxPresenter<MovieListScreen> {
-    private
-    static final String TAG = "MovieListPresenter";
+    private static final String TAG = MovieListPresenter.class.getSimpleName();
 
     private final Context context;
     private final MovieInteractor movieInteractor;
-    private MovieApi movieApi;
-
 
     @Inject
-    public MovieListPresenter(Context context, MovieInteractor movieInteractor, MovieApi movieApi) {
+    public MovieListPresenter(Context context, MovieInteractor movieInteractor) {
         this.context = context;
         this.movieInteractor = movieInteractor;
-        this.movieApi = movieApi;
     }
 
     public void searchMovie(final String movieTitle) {
-        attachSubscription(movieInteractor.performRequest(movieApi.searchMovie(movieTitle))
-                //todo Log?
-                //.map(new Function<List<MovieDetail>, List>() {}) //Todo add headers in a map
-                .subscribe(new Consumer<List<MovieDetail>>() {
+        performRequest(movieInteractor.searchMovie(movieTitle),
+                new Consumer<List<MovieDetail>>() {
                     @Override
-                    public void accept(List<MovieDetail> movieDetails) throws Exception {
-                        if (screen!=null){
+                    public void accept(List<MovieDetail> movieDetails) {
+                        if (screen != null) {
                             screen.showMovies(movieDetails);
                         }
                     }
-                },new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Exception {
-                            throwable.printStackTrace();
-                            if (screen!=null){
-                                screen.showError(context.getString(R.string.unexpected_error_happened));
-                            }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        throwable.printStackTrace();
+                        if (screen != null) {
+                            screen.showError(context.getString(R.string.unexpected_error_happened));
                         }
-                }));
+                    }
+                });
     }
 }
