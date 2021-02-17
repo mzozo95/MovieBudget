@@ -9,7 +9,7 @@ public class MovieResponse {
     private List<Movie> results;
     @SerializedName("total_results")
     private int totalResults;
-    @SerializedName("total_results")
+    @SerializedName("total_pages")
     private int totalPages;
 
     public int getPage() {

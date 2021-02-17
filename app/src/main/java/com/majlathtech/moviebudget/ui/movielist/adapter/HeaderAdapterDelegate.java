@@ -39,12 +39,12 @@ public class HeaderAdapterDelegate extends AdapterDelegate<HeaderAdapterDelegate
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Header delivery = (Header) adapter.getItem(position);
-        holder.titleTV.setText(delivery.getName());
+        holder.tvTitle.setText(delivery.getName());
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tvTitle)
-        TextView titleTV;
+        TextView tvTitle;
 
 
         ViewHolder(View v) {

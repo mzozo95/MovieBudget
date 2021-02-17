@@ -53,9 +53,6 @@ public class MovieInteractor {
                         });
                         return movieDetails;
                     }
-                });
-                //todo remove lines
-                //.subscribeOn(Schedulers.computation())
-                //.observeOn(AndroidSchedulers.mainThread());
+                }).subscribeOn(Schedulers.computation());
     }
 }
