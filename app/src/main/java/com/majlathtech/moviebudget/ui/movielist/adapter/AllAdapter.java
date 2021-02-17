@@ -2,7 +2,6 @@ package com.majlathtech.moviebudget.ui.movielist.adapter;
 
 
 import android.content.Context;
-import android.graphics.Movie;
 
 import com.majlathtech.moviebudget.network.model.MovieDetail;
 import com.majlathtech.moviebudget.ui.composite.adapter.CompositeAdapter;

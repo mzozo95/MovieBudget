@@ -13,6 +13,9 @@ import com.majlathtech.moviebudget.ui.composite.adapter.CompositeAdapter;
 import com.majlathtech.moviebudget.ui.composite.model.Header;
 import com.majlathtech.moviebudget.ui.composite.model.Types;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class HeaderAdapterDelegate extends AdapterDelegate<HeaderAdapterDelegate.ViewHolder> {
 
     private final CompositeAdapter adapter;
@@ -40,12 +43,13 @@ public class HeaderAdapterDelegate extends AdapterDelegate<HeaderAdapterDelegate
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.tvTitle)
         TextView titleTV;
 
 
         ViewHolder(View v) {
             super(v);
-            titleTV = (TextView) v.findViewById(R.id.titleTV);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.majlathtech.moviebudget.R;
 import com.majlathtech.moviebudget.network.model.MovieDetail;
-import com.majlathtech.moviebudget.network.util.NetworkUtil;
+import com.majlathtech.moviebudget.network.util.MovieUtil;
 import com.majlathtech.moviebudget.ui.composite.adapter.AdapterDelegate;
 import com.majlathtech.moviebudget.ui.composite.adapter.CompositeAdapter;
 import com.majlathtech.moviebudget.ui.composite.model.Types;
@@ -46,7 +46,7 @@ public class MovieDetailAdapterDelegate  extends AdapterDelegate<MovieDetailAdap
         holder.tvTitle.setText(result.getTitle());
         holder.tvBudget.setText(String.format(context.getString(R.string.money_format), result.getBudget()));
         Glide.with(context)
-                .load(NetworkUtil.generatePosterImageUrl(result))
+                .load(MovieUtil.generatePosterImageUrl(result))
                 .into(holder.ivPoster);//Todo set up placeholder and error img
     }
 

@@ -66,10 +66,9 @@ public class NetworkModule {
         return retrofit.create(MovieApi.class);
     }
 
-
     @Provides
     @Singleton
-    public Gson provideGson(){
+    public Gson provideGson() {
         return new GsonBuilder().create();
     }
 }

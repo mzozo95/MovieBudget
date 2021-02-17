@@ -3,7 +3,6 @@ package com.majlathtech.moviebudget.ui.movielist;
 import android.content.Context;
 
 import com.majlathtech.moviebudget.R;
-import com.majlathtech.moviebudget.network.api.MovieApi;
 import com.majlathtech.moviebudget.network.interactor.MovieInteractor;
 import com.majlathtech.moviebudget.network.model.MovieDetail;
 import com.majlathtech.moviebudget.ui.RxPresenter;
@@ -37,7 +36,7 @@ public class MovieListPresenter extends RxPresenter<MovieListScreen> {
                     }
                 }, new Consumer<Throwable>() {
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
+                    public void accept(Throwable throwable) {
                         throwable.printStackTrace();
                         if (screen != null) {
                             screen.showError(context.getString(R.string.unexpected_error_happened));
