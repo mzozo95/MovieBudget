@@ -52,7 +52,7 @@ public class MovieListItemAdapter extends RecyclerView.Adapter<MovieListItemAdap
         holder.tvTitle.setText(result.getTitle());
         holder.tvBudget.setText(String.format(context.getString(R.string.money_format), result.getBudget()));
         Glide.with(context)
-                .load(NetworkUtil.getPosterImageUrl(result))
+                .load(NetworkUtil.generatePosterImageUrl(result))
                 .into(holder.ivPoster);//Todo set up placeholder and error img
     }
 

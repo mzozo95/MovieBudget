@@ -9,7 +9,7 @@ import dagger.Provides;
 
 @Module
 public class UIModule {
-    private Context context;
+    private final Context context;
 
     public UIModule(Context context) {
         this.context = context;

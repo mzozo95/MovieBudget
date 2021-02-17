@@ -18,6 +18,6 @@ public class ExampleUnitTest {
     public void imageURLTest() throws Exception {
         MovieDetail movieDetail = new MovieDetail();
         movieDetail.setPoster_path("8uO0gUM8aNqYLs1OsTBQiXu0fEv.jpg");
-        assertEquals(NetworkUtil.getPosterImageUrl(movieDetail), "https://image.tmdb.org/t/p/w500/8uO0gUM8aNqYLs1OsTBQiXu0fEv.jpg");
+        assertEquals(NetworkUtil.generatePosterImageUrl(movieDetail), "https://image.tmdb.org/t/p/w500/8uO0gUM8aNqYLs1OsTBQiXu0fEv.jpg");
     }
 }

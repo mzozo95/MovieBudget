@@ -14,7 +14,10 @@ public class MovieBudgetApplication extends Application {
         super.onCreate();
         Stetho.initializeWithDefaults(this);
 
-        injector = DaggerAppComponent.builder().uIModule(new UIModule(this)).networkModule(new NetworkModule(this)).build();
+        injector = DaggerAppComponent.builder()
+                .uIModule(new UIModule(this))
+                .networkModule(new NetworkModule(this))
+                .build();
     }
 
 }

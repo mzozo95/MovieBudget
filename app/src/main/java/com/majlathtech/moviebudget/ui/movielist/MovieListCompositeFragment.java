@@ -20,8 +20,6 @@ import com.majlathtech.moviebudget.ui.composite.model.Listable;
 import com.majlathtech.moviebudget.ui.movielist.adapter.AllAdapter;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;

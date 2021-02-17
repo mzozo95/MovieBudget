@@ -10,8 +10,6 @@ public abstract class Presenter<S> {
     public void detachScreen() {
         this.screen = null;
     }
-
-    //todo getView, throw exception!
 }
 
 
