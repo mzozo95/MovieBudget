@@ -6,6 +6,8 @@ import com.majlathtech.moviebudget.R;
 import com.majlathtech.moviebudget.network.service.MovieService;
 import com.majlathtech.moviebudget.ui.RxPresenter;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 public class MovieListPresenter extends RxPresenter<MovieListScreen> {
@@ -21,6 +23,10 @@ public class MovieListPresenter extends RxPresenter<MovieListScreen> {
     }
 
     public void searchMovie(final String movieTitle) {
+        if (movieTitle == null || movieTitle.isEmpty()) {
+            screen.showMovies(new ArrayList<>());
+            return;
+        }
         performRequest(movieService.searchMovie(movieTitle),
                 movieDetails -> screen.showMovies(movieDetails),
                 throwable -> {

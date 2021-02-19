@@ -27,7 +27,7 @@ public class MovieService {
 
     public Single<List<MovieDetail>> searchMovie(String movieName) {
         return movieApi.searchMovie(movieName)
-                .flatMap((Function<MovieResponse, Observable<Movie>>) movieResponse -> {
+                .flatMap((Function<MovieResponse, Observable<Movie>>) movieResponse -> {//Todo handle pages?
                     return Observable.fromIterable(movieResponse.getResults());// flatMap - to return details one by one from SearchListResponse
                 })
                 .flatMap((Function<Movie, Observable<MovieDetail>>) movie -> {
