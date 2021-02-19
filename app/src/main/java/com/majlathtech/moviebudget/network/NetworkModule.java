@@ -37,19 +37,15 @@ public class NetworkModule {
     public Retrofit provideRetrofit() {
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new HeaderInterceptor())
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        okhttp3.Response originalResponse = chain.proceed(chain.request());
-                        return originalResponse.newBuilder()
-                                .header("Cache-Control", "public, max-age=" + 60)
-                                .build();
+                .addInterceptor(chain -> {
+                    Response originalResponse = chain.proceed(chain.request());
+                    return originalResponse.newBuilder()
+                            .header("Cache-Control", "public, max-age=" + 60)
+                            .build();
 
-                    }
                 })
                 .cache(new Cache(new File(context.getCacheDir(), "apiResponses"), 5 * 1024 * 1024))
                 .addInterceptor(new ChuckInterceptor(context))
-                .addNetworkInterceptor(new StethoInterceptor())
                 .build();
 
         return new Retrofit.Builder()

@@ -1,17 +1,17 @@
 package com.majlathtech.moviebudget.ui.composite.adapter;
 
 
-
-import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class CompositeAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final String TAG = "CompositeAdapter";
-    private List<AdapterDelegate> delegates = new ArrayList<AdapterDelegate>();
+    private List<AdapterDelegate> delegates = new ArrayList<>();
 
     protected void addAdapterDelegate(AdapterDelegate adapterDelegate) {
         delegates.add(adapterDelegate);
@@ -21,25 +21,26 @@ public abstract class CompositeAdapter<T> extends RecyclerView.Adapter<RecyclerV
         delegates.remove(adapterDelegate);
     }
 
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         for (AdapterDelegate delegate : delegates) {
             if (delegate.getViewType() == viewType) {
                 return delegate.onCreateViewHolder(parent);
             }
         }
-        return null;
+        throw new RuntimeException("Unimplemented viewHolderType used");
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         for (AdapterDelegate delegate : delegates) {
             if (delegate.getViewType() == getItemViewType(position)) {
                 delegate.onBindViewHolder(holder, position);
+                return;
             }
         }
-        Log.e(TAG, "No adapter found for position:" + position + " with view type:" + getItemViewType(position));
-
+        throw new RuntimeException("No adapter found for position:" + position + " with view type:" + getItemViewType(position));
     }
 
     public abstract T getItem(int position);

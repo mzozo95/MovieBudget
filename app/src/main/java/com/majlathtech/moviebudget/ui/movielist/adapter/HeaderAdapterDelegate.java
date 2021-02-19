@@ -46,7 +46,6 @@ public class HeaderAdapterDelegate extends AdapterDelegate<HeaderAdapterDelegate
         @BindView(R.id.tvTitle)
         TextView tvTitle;
 
-
         ViewHolder(View v) {
             super(v);
             ButterKnife.bind(this, itemView);

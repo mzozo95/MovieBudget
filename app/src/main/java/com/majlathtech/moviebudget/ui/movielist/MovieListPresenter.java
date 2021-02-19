@@ -27,20 +27,14 @@ public class MovieListPresenter extends RxPresenter<MovieListScreen> {
 
     public void searchMovie(final String movieTitle) {
         performRequest(movieInteractor.searchMovie(movieTitle),
-                new Consumer<List<MovieDetail>>() {
-                    @Override
-                    public void accept(List<MovieDetail> movieDetails) {
-                        if (screen != null) {
-                            screen.showMovies(movieDetails);
-                        }
+                movieDetails -> {
+                    if (screen != null) {
+                        screen.showMovies(movieDetails);
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) {
-                        throwable.printStackTrace();
-                        if (screen != null) {
-                            screen.showError(context.getString(R.string.unexpected_error_happened));
-                        }
+                }, throwable -> {
+                    throwable.printStackTrace();
+                    if (screen != null) {
+                        screen.showError(context.getString(R.string.unexpected_error_happened));
                     }
                 });
     }

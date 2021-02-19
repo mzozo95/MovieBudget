@@ -1,6 +1,9 @@
 package com.majlathtech.moviebudget.ui.movielist;
 
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -70,15 +73,9 @@ public class MovieListFragment extends Fragment implements MovieListScreen {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         presenter.attachScreen(this);
-    }
-
-    @Override
-    public void onStop() {
-        presenter.detachScreen();
-        super.onStop();
     }
 
     @Override
@@ -105,6 +102,7 @@ public class MovieListFragment extends Fragment implements MovieListScreen {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        presenter.detachScreen();
         unbinder.unbind();
     }
 
@@ -113,7 +111,7 @@ public class MovieListFragment extends Fragment implements MovieListScreen {
         pbDownload.setVisibility(View.VISIBLE);
         presenter.searchMovie(etSearch.getText().toString());
         if (ma != null) {
-            ma.setListItems(new ArrayList<MovieDetail>());
+            ma.setListItems(new ArrayList<>());
             ma.notifyDataSetChanged();
         }
     }

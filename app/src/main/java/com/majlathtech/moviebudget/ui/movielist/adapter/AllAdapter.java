@@ -45,13 +45,11 @@ public class AllAdapter extends CompositeAdapter<Listable> {
     public int getItemViewType(int position) {
         Listable listable = getItem(position);
         if (listable instanceof MovieDetail) {
-            return Types.MOVIE;
+            return Types.MOVIE;//Todo add type int into MovieDetail class?
         } else if (listable instanceof Header) {
             return Types.HEADER;
         } else {
             throw new RuntimeException("Item type not supported;");
         }
-
-
     }
 }

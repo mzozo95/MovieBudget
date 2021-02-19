@@ -5,8 +5,6 @@ import com.majlathtech.moviebudget.network.model.Movie;
 import com.majlathtech.moviebudget.network.model.MovieDetail;
 import com.majlathtech.moviebudget.network.model.MovieResponse;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -29,30 +27,16 @@ public class MovieInteractor {
 
     public Single<List<MovieDetail>> searchMovie(String movieName) {
         return movieApi.searchMovie(movieName)
-                .flatMap(new Function<MovieResponse, Observable<Movie>>() {
-                    @Override
-                    public Observable<Movie> apply(MovieResponse movieResponse) {
-                        return Observable.fromIterable(movieResponse.getResults());// flatMap - to return details one by one from SearchListResponse
-                    }
+                .flatMap((Function<MovieResponse, Observable<Movie>>) movieResponse -> {
+                    return Observable.fromIterable(movieResponse.getResults());// flatMap - to return details one by one from SearchListResponse
                 })
-                .flatMap(new Function<Movie, Observable<MovieDetail>>() {
-                    @Override
-                    public Observable<MovieDetail> apply(Movie movie) {
-                        return movieApi.getMovieDetails(movie.getId());// and returns the corresponding getMovieDetailObservable for the specific ID
-                    }
+                .flatMap((Function<Movie, Observable<MovieDetail>>) movie -> {
+                    return movieApi.getMovieDetails(movie.getId());// and returns the corresponding getMovieDetailObservable for the specific ID
                 }).subscribeOn(Schedulers.io())
                 .toList()
-                .map(new Function<List<MovieDetail>, List<MovieDetail>>() {
-                    @Override
-                    public List<MovieDetail> apply(List<MovieDetail> movieDetails) throws Exception {
-                        Collections.sort(movieDetails, new Comparator<MovieDetail>() {
-                            @Override
-                            public int compare(MovieDetail movieDetail, MovieDetail t1) {
-                                return t1.getBudget() - movieDetail.getBudget();
-                            }
-                        });
-                        return movieDetails;
-                    }
+                .map(movieDetails -> {
+                    movieDetails.sort((movieDetail, t1) -> t1.getBudget() - movieDetail.getBudget());
+                    return movieDetails;
                 }).subscribeOn(Schedulers.computation());
     }
 }
