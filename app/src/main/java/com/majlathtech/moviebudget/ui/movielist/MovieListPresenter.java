@@ -3,30 +3,25 @@ package com.majlathtech.moviebudget.ui.movielist;
 import android.content.Context;
 
 import com.majlathtech.moviebudget.R;
-import com.majlathtech.moviebudget.network.interactor.MovieInteractor;
-import com.majlathtech.moviebudget.network.model.MovieDetail;
+import com.majlathtech.moviebudget.network.interactor.MovieService;
 import com.majlathtech.moviebudget.ui.RxPresenter;
 
-import java.util.List;
-
 import javax.inject.Inject;
-
-import io.reactivex.functions.Consumer;
 
 public class MovieListPresenter extends RxPresenter<MovieListScreen> {
     private static final String TAG = MovieListPresenter.class.getSimpleName();
 
     private final Context context;
-    private final MovieInteractor movieInteractor;
+    private final MovieService movieService;
 
     @Inject
-    public MovieListPresenter(Context context, MovieInteractor movieInteractor) {
+    public MovieListPresenter(Context context, MovieService movieService) {
         this.context = context;
-        this.movieInteractor = movieInteractor;
+        this.movieService = movieService;
     }
 
     public void searchMovie(final String movieTitle) {
-        performRequest(movieInteractor.searchMovie(movieTitle),
+        performRequest(movieService.searchMovie(movieTitle),
                 movieDetails -> {
                           screen.showMovies(movieDetails);
                   }, throwable -> {

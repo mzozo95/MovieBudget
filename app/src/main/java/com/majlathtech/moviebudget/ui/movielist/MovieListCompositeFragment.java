@@ -69,20 +69,8 @@ public class MovieListCompositeFragment extends Fragment implements MovieListScr
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
-
-        return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         presenter.attachScreen(this);
-    }
-
-    @Override
-    public void onStop() {
-        presenter.detachScreen();
-        super.onStop();
+        return view;
     }
 
     @Override
@@ -115,6 +103,7 @@ public class MovieListCompositeFragment extends Fragment implements MovieListScr
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        presenter.detachScreen();
         unbinder.unbind();
     }
 

@@ -16,12 +16,12 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.majlathtech.moviebudget.MovieBudgetApplication.injector;
 
-public class MovieInteractor {
+public class MovieService {
     @Inject
     MovieApi movieApi;
 
     @Inject
-    public MovieInteractor() {
+    public MovieService() {
         injector.inject(this);
     }
 
