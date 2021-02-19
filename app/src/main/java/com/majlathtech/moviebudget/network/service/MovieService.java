@@ -1,4 +1,4 @@
-package com.majlathtech.moviebudget.network.interactor;
+package com.majlathtech.moviebudget.network.service;
 
 import com.majlathtech.moviebudget.network.api.MovieApi;
 import com.majlathtech.moviebudget.network.model.Movie;

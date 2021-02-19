@@ -3,7 +3,7 @@ package com.majlathtech.moviebudget.ui.movielist;
 import android.content.Context;
 
 import com.majlathtech.moviebudget.R;
-import com.majlathtech.moviebudget.network.interactor.MovieService;
+import com.majlathtech.moviebudget.network.service.MovieService;
 import com.majlathtech.moviebudget.ui.RxPresenter;
 
 import javax.inject.Inject;
