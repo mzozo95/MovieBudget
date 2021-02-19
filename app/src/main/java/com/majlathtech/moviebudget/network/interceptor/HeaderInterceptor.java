@@ -1,7 +1,7 @@
 package com.majlathtech.moviebudget.network.interceptor;
 
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.majlathtech.moviebudget.network.NetworkConfig;
 
