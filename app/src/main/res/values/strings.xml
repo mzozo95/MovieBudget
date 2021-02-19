@@ -6,4 +6,5 @@
     <string name="no_content_available">No content available!</string>
     <string name="list_downloaded">List downloaded!</string>
     <string name="unexpected_error_happened">Unexpected error happened!</string>
+    <string name="no_items_to_show">No items to show.</string>
 </resources>

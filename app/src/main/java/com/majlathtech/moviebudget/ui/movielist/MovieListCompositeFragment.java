@@ -112,7 +112,7 @@ public class MovieListCompositeFragment extends Fragment implements MovieListScr
         pbDownload.setVisibility(View.VISIBLE);
         presenter.searchMovie(etSearch.getText().toString());
         if (allAdapter != null) {
-            allAdapter.deleteList();
+            allAdapter.clearItems();
         }
     }
 }

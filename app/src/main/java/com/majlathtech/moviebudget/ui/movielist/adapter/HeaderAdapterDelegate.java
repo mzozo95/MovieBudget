@@ -17,7 +17,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class HeaderAdapterDelegate extends AdapterDelegate<HeaderAdapterDelegate.ViewHolder> {
-
     private final CompositeAdapter adapter;
 
     public HeaderAdapterDelegate(Context context, CompositeAdapter adapter) {

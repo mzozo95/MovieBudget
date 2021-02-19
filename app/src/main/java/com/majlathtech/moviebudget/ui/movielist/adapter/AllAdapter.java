@@ -26,7 +26,7 @@ public class AllAdapter extends CompositeAdapter<Listable> {
         notifyDataSetChanged();
     }
 
-    public void deleteList(){
+    public void clearItems(){
         this.listables = new ArrayList<>();
         notifyDataSetChanged();
     }

@@ -1,43 +1,48 @@
 package com.majlathtech.moviebudget.ui.movielist.adapter;
 
 import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.majlathtech.moviebudget.R;
 import com.majlathtech.moviebudget.network.model.MovieDetail;
 import com.majlathtech.moviebudget.network.util.MovieUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MovieListItemAdapter extends RecyclerView.Adapter<MovieListItemAdapter.MovieViewHolder> {
-    private List<MovieDetail> rList = new ArrayList<>();//Todo set/hashmap would be better
-    private Context context;
+    private List<MovieDetail> items;
 
-    private MovieListItemAdapter() {
+
+    public void setListItems(List<MovieDetail> list) {
+        items = list;
+        notifyDataSetChanged();
     }
 
-    public void setListItems(List<MovieDetail> list){
-        rList = list;
+    public void clearItems() {
+        notifyItemRangeRemoved(0, getItemCount());
+        items = null;
     }
 
-    public MovieListItemAdapter(List<MovieDetail> r, Context context) {
-        this.rList = r;
-        this.context = context;
+    public MovieListItemAdapter() {
+    }
+
+    public MovieListItemAdapter(List<MovieDetail> r) {
+        this.items = r;
     }
 
     @Override
     public int getItemCount() {
-        return rList.size();
+        return items == null ? 0 : items.size();
     }
 
     @Override
@@ -48,7 +53,8 @@ public class MovieListItemAdapter extends RecyclerView.Adapter<MovieListItemAdap
 
     @Override
     public void onBindViewHolder(final MovieViewHolder holder, int position) {
-        final MovieDetail result = rList.get(position);
+        final MovieDetail result = items.get(position);
+        Context context = holder.tvTitle.getContext();
         holder.tvTitle.setText(result.getTitle());
         holder.tvBudget.setText(String.format(context.getString(R.string.money_format), result.getBudget()));
         Glide.with(context)

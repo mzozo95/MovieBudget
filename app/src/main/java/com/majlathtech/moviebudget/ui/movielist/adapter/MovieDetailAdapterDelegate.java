@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 
 public class MovieDetailAdapterDelegate  extends AdapterDelegate<MovieDetailAdapterDelegate.ViewHolder> {
     private final CompositeAdapter adapter;
-    private Context context;
+    private final Context context;
 
     public MovieDetailAdapterDelegate(Context context, CompositeAdapter adapter) {
         super(context);

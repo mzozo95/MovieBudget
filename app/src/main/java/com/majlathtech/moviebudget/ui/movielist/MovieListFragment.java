@@ -7,12 +7,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.majlathtech.moviebudget.R;
@@ -35,8 +37,10 @@ public class MovieListFragment extends Fragment implements MovieListScreen {
     @Inject
     MovieListPresenter presenter;
 
-    MovieListItemAdapter ma;
+    MovieListItemAdapter movieAdapter;
 
+    @BindView(R.id.tvEmpty)
+    TextView tvEmpty;
     @BindView(R.id.etSearch)
     EditText etSearch;
     @BindView(R.id.btnSearch)
@@ -59,8 +63,7 @@ public class MovieListFragment extends Fragment implements MovieListScreen {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movie_list, container, false);
         unbinder = ButterKnife.bind(this, view);
 
@@ -68,6 +71,8 @@ public class MovieListFragment extends Fragment implements MovieListScreen {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
+        movieAdapter = new MovieListItemAdapter();
+        recyclerView.setAdapter(movieAdapter);
 
         return view;
     }
@@ -80,23 +85,27 @@ public class MovieListFragment extends Fragment implements MovieListScreen {
 
     @Override
     public void showMovies(List<MovieDetail> movieList) {
-        pbDownload.setVisibility(View.GONE);
-        if (movieList != null && movieList.size() != 0) {
-            Toast.makeText(getActivity(), R.string.list_downloaded, Toast.LENGTH_LONG).show();
-            if (ma == null) {
-                ma = new MovieListItemAdapter(movieList, getActivity());
-            }
-            ma.setListItems(movieList);
-            recyclerView.setAdapter(ma);
+        hideLoading();
+        if (movieList.size() != 0) {
+            tvEmpty.setVisibility(View.GONE);
+            movieAdapter.setListItems(movieList);
         } else {
-            showError(getString(R.string.no_content_available));
+            tvEmpty.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void showError(String errorMsg) {
+        hideLoading();
         Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
+    }
+
+    public void hideLoading() {
         pbDownload.setVisibility(View.GONE);
+    }
+
+    public void showLoading() {
+        pbDownload.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -108,11 +117,8 @@ public class MovieListFragment extends Fragment implements MovieListScreen {
 
     @OnClick(R.id.btnSearch)
     public void onViewClicked() {
-        pbDownload.setVisibility(View.VISIBLE);
+        showLoading();
         presenter.searchMovie(etSearch.getText().toString());
-        if (ma != null) {
-            ma.setListItems(new ArrayList<>());
-            ma.notifyDataSetChanged();
-        }
+        movieAdapter.clearItems();
     }
 }

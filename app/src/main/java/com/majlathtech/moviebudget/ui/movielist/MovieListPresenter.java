@@ -22,11 +22,10 @@ public class MovieListPresenter extends RxPresenter<MovieListScreen> {
 
     public void searchMovie(final String movieTitle) {
         performRequest(movieService.searchMovie(movieTitle),
-                movieDetails -> {
-                          screen.showMovies(movieDetails);
-                  }, throwable -> {
+                movieDetails -> screen.showMovies(movieDetails),
+                throwable -> {
                     throwable.printStackTrace();
-                          screen.showError(context.getString(R.string.unexpected_error_happened));
-                  });
+                    screen.showError(context.getString(R.string.unexpected_error_happened));
+                });
     }
 }
