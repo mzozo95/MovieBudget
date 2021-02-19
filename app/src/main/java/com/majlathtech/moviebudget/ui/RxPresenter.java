@@ -54,12 +54,7 @@ public class RxPresenter<S>  extends Presenter<S> {
     }
 
     protected <T> void performRequest(Observable<T> o, Consumer<T> s) {
-        attachDisposable(scheduleThreads(o).subscribe(s, new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable throwable) {
-                throwable.printStackTrace();
-            }
-        }));
+        attachDisposable(scheduleThreads(o).subscribe(s, Throwable::printStackTrace));
     }
 }
 

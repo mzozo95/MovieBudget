@@ -28,14 +28,10 @@ public class MovieListPresenter extends RxPresenter<MovieListScreen> {
     public void searchMovie(final String movieTitle) {
         performRequest(movieInteractor.searchMovie(movieTitle),
                 movieDetails -> {
-                    if (screen != null) {
-                        screen.showMovies(movieDetails);
-                    }
-                }, throwable -> {
+                          screen.showMovies(movieDetails);
+                  }, throwable -> {
                     throwable.printStackTrace();
-                    if (screen != null) {
-                        screen.showError(context.getString(R.string.unexpected_error_happened));
-                    }
-                });
+                          screen.showError(context.getString(R.string.unexpected_error_happened));
+                  });
     }
 }

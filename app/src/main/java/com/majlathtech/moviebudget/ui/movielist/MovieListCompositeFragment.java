@@ -91,8 +91,7 @@ public class MovieListCompositeFragment extends Fragment implements MovieListScr
         if (movieList != null && movieList.size() != 0) {
             Toast.makeText(getActivity(), R.string.list_downloaded, Toast.LENGTH_LONG).show();
 
-            List<Listable> listableList = new ArrayList<>();
-            listableList.addAll(movieList);
+            List<Listable> listableList = new ArrayList<>(movieList);
             listableList.add(0, new Header("My First header"));
             listableList.add(2, new Header("SecondHeader"));
 
