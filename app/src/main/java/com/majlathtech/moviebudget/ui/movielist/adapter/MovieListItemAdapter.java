@@ -8,6 +8,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -26,7 +27,6 @@ public class MovieListItemAdapter extends RecyclerView.Adapter<MovieListItemAdap
     private List<MovieDetail> items;
     private Set<MovieDetail> favorites = new HashSet<>();
     private OnItemChangedListener listener;
-
 
     public void setListItems(List<MovieDetail> list) {
         items = list;
@@ -51,6 +51,7 @@ public class MovieListItemAdapter extends RecyclerView.Adapter<MovieListItemAdap
         return items == null ? 0 : items.size();
     }
 
+    @NonNull
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_movie_detail, viewGroup, false);

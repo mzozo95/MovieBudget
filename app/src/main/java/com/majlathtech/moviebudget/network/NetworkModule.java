@@ -2,7 +2,6 @@ package com.majlathtech.moviebudget.network;
 
 import android.content.Context;
 
-import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -11,14 +10,12 @@ import com.majlathtech.moviebudget.network.interceptor.HeaderInterceptor;
 import com.readystatesoftware.chuck.ChuckInterceptor;
 
 import java.io.File;
-import java.io.IOException;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 import retrofit2.Retrofit;

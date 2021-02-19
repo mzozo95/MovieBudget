@@ -26,13 +26,10 @@ public class MovieService {
     }
 
     public Single<List<MovieDetail>> searchMovie(String movieName) {
-        return movieApi.searchMovie(movieName)
-                .flatMap((Function<MovieResponse, Observable<Movie>>) movieResponse -> {//Todo handle pages?
-                    return Observable.fromIterable(movieResponse.getResults());// flatMap - to return details one by one from SearchListResponse
-                })
-                .flatMap((Function<Movie, Observable<MovieDetail>>) movie -> {
-                    return movieApi.getMovieDetails(movie.getId());// and returns the corresponding getMovieDetailObservable for the specific ID
-                }).subscribeOn(Schedulers.io())
+        return movieApi.searchMovie(movieName)//Todo handle pages?
+                .flatMap((Function<MovieResponse, Observable<Movie>>) movieResponse -> Observable.fromIterable(movieResponse.getResults()))// flatMap - to return details one by one from SearchListResponse
+                .flatMap((Function<Movie, Observable<MovieDetail>>) movie -> movieApi.getMovieDetails(movie.getId()))// and returns the corresponding getMovieDetailObservable for the specific ID
+                .subscribeOn(Schedulers.io())
                 .toList()
                 .map(movieDetails -> {
                     movieDetails.sort((movieDetail, t1) -> t1.getBudget() - movieDetail.getBudget());
