@@ -3,7 +3,7 @@ package com.majlathtech.moviebudget;
 import com.majlathtech.moviebudget.network.NetworkModule;
 import com.majlathtech.moviebudget.network.service.MovieService;
 import com.majlathtech.moviebudget.ui.UIModule;
-import com.majlathtech.moviebudget.ui.movielist.MovieListCompositeFragment;
+import com.majlathtech.moviebudget.ui.composite.list.MovieListCompositeFragment;
 import com.majlathtech.moviebudget.ui.movielist.MovieListFragment;
 
 import javax.inject.Singleton;

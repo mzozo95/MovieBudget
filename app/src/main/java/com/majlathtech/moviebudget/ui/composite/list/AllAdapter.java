@@ -1,4 +1,4 @@
-package com.majlathtech.moviebudget.ui.movielist.adapter;
+package com.majlathtech.moviebudget.ui.composite.list;
 
 
 import android.content.Context;

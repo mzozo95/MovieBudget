@@ -1,4 +1,4 @@
-package com.majlathtech.moviebudget.ui.movielist;
+package com.majlathtech.moviebudget.ui.composite.list;
 
 
 import android.os.Bundle;
@@ -17,7 +17,9 @@ import com.majlathtech.moviebudget.R;
 import com.majlathtech.moviebudget.network.model.MovieDetail;
 import com.majlathtech.moviebudget.ui.composite.model.Header;
 import com.majlathtech.moviebudget.ui.composite.model.Listable;
-import com.majlathtech.moviebudget.ui.movielist.adapter.AllAdapter;
+import com.majlathtech.moviebudget.ui.movielist.MovieListFragment;
+import com.majlathtech.moviebudget.ui.movielist.MovieListPresenter;
+import com.majlathtech.moviebudget.ui.movielist.MovieListScreen;
 
 import java.util.ArrayList;
 import java.util.List;

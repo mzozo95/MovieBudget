@@ -1,4 +1,4 @@
-package com.majlathtech.moviebudget.ui.movielist.adapter;
+package com.majlathtech.moviebudget.ui.composite.list;
 
 
 import android.content.Context;
@@ -47,7 +47,9 @@ public class MovieDetailAdapterDelegate  extends AdapterDelegate<MovieDetailAdap
         holder.tvBudget.setText(String.format(context.getString(R.string.money_format), result.getBudget()));
         Glide.with(context)
                 .load(MovieUtil.generatePosterImageUrl(result))
-                .into(holder.ivPoster);//Todo set up placeholder and error img
+                .fallback(android.R.drawable.alert_dark_frame)
+                .error(android.R.drawable.alert_dark_frame)
+                .into(holder.ivPoster);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

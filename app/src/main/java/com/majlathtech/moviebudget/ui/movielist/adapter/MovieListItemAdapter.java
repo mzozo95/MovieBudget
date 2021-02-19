@@ -59,7 +59,10 @@ public class MovieListItemAdapter extends RecyclerView.Adapter<MovieListItemAdap
         holder.tvBudget.setText(String.format(context.getString(R.string.money_format), result.getBudget()));
         Glide.with(context)
                 .load(MovieUtil.generatePosterImageUrl(result))
-                .into(holder.ivPoster);//Todo set up placeholder and error img
+                .error(android.R.drawable.sym_call_missed)//todo replace dummy images
+                .placeholder(android.R.drawable.ic_menu_recent_history)
+                .centerInside()
+                .into(holder.ivPoster);
     }
 
     public static class MovieViewHolder extends RecyclerView.ViewHolder {
