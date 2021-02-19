@@ -23,6 +23,7 @@ import com.majlathtech.moviebudget.ui.movielist.adapter.MovieListItemAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -33,7 +34,7 @@ import butterknife.Unbinder;
 
 import static com.majlathtech.moviebudget.MovieBudgetApplication.injector;
 
-public class MovieListFragment extends Fragment implements MovieListScreen {
+public class MovieListFragment extends Fragment implements MovieListScreen, MovieListItemAdapter.OnItemChangedListener {
     @Inject
     MovieListPresenter presenter;
 
@@ -50,6 +51,8 @@ public class MovieListFragment extends Fragment implements MovieListScreen {
     Unbinder unbinder;
     @BindView(R.id.pbDownload)
     ProgressBar pbDownload;
+
+    Set<MovieDetail> favorites;
 
     public MovieListFragment() {
         injector.inject(this);
@@ -81,6 +84,12 @@ public class MovieListFragment extends Fragment implements MovieListScreen {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         presenter.attachScreen(this);
+    }
+
+    @Override
+    public void onFavoriteChangeApplied(Set<MovieDetail> favorites) {
+        this.favorites = favorites;
+        //Todo save to db
     }
 
     @Override
