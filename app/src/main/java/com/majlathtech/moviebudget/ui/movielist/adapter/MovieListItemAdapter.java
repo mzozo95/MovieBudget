@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.majlathtech.moviebudget.R;
 import com.majlathtech.moviebudget.network.model.MovieDetail;
 import com.majlathtech.moviebudget.network.util.MovieUtil;
+import com.majlathtech.moviebudget.ui.UiTools;
 
 import java.util.HashSet;
 import java.util.List;
@@ -77,12 +78,7 @@ public class MovieListItemAdapter extends RecyclerView.Adapter<MovieListItemAdap
                     }
                 }
         );
-        Glide.with(context)
-                .load(MovieUtil.generatePosterImageUrl(movie))
-                .error(android.R.drawable.sym_call_missed)//todo replace dummy images
-                .placeholder(android.R.drawable.ic_menu_recent_history)
-                .centerInside()
-                .into(holder.ivPoster);
+        UiTools.loadImage(holder.ivPoster, MovieUtil.generatePosterImageUrl(movie));
     }
 
     public static class MovieViewHolder extends RecyclerView.ViewHolder {
