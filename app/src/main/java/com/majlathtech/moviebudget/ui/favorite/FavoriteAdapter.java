@@ -23,7 +23,7 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FavoriteAdapter  extends RecyclerView.Adapter<FavoriteAdapter.MovieViewHolder> {
+public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.MovieViewHolder> {
     private List<MovieDetail> items;
     private Set<MovieDetail> favorites = new HashSet<>();
     private OnItemChangedListener listener;
@@ -69,11 +69,14 @@ public class FavoriteAdapter  extends RecyclerView.Adapter<FavoriteAdapter.Movie
         holder.cbFavorite.setOnCheckedChangeListener((compoundButton, isChecked) -> {
                     if (isChecked) {
                         favorites.add(movie);
+                        if (listener != null) {
+                            listener.onFavoriteAdded(movie);
+                        }
                     } else {
                         favorites.remove(movie);
-                    }
-                    if (listener != null) {
-                        listener.onFavoriteChangeApplied(new HashSet<>(favorites));
+                        if (listener != null) {
+                            listener.onFavoriteDeleted(movie);
+                        }
                     }
                 }
         );
@@ -97,6 +100,9 @@ public class FavoriteAdapter  extends RecyclerView.Adapter<FavoriteAdapter.Movie
     }
 
     public interface OnItemChangedListener {
-        void onFavoriteChangeApplied(Set<MovieDetail> favorites);
+
+        void onFavoriteAdded(MovieDetail favorite);
+
+        void onFavoriteDeleted(MovieDetail favorites);
     }
 }

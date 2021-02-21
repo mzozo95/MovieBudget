@@ -97,6 +97,11 @@ public class MovieListCompositeFragment extends Fragment implements MovieListScr
     }
 
     @Override
+    public void showFavorites(List<MovieDetail> favoriteMovieElements) {
+
+    }
+
+    @Override
     public void showError(String errorMsg) {
         Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
         pbDownload.setVisibility(View.GONE);

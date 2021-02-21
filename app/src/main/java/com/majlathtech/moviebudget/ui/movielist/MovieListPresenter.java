@@ -2,8 +2,13 @@ package com.majlathtech.moviebudget.ui.movielist;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.majlathtech.moviebudget.R;
+import com.majlathtech.moviebudget.network.model.MovieDetail;
 import com.majlathtech.moviebudget.network.service.MovieService;
+import com.majlathtech.moviebudget.repository.FavoriteDao;
+import com.majlathtech.moviebudget.repository.FavoriteDatabase;
 import com.majlathtech.moviebudget.ui.RxPresenter;
 
 import java.util.ArrayList;
@@ -15,11 +20,26 @@ public class MovieListPresenter extends RxPresenter<MovieListScreen> {
 
     private final Context context;
     private final MovieService movieService;
+    private final FavoriteDao favoriteDao;
 
     @Inject
-    public MovieListPresenter(Context context, MovieService movieService) {
+    public MovieListPresenter(Context context, MovieService movieService, FavoriteDatabase favoriteDatabase) {
         this.context = context;
         this.movieService = movieService;
+        this.favoriteDao = favoriteDatabase.favDao();
+    }
+
+    public void addToFavorites(@NonNull MovieDetail... favoriteMovieElements) {
+        performJob(favoriteDao.insertAll(favoriteMovieElements));
+    }
+
+    public void removeFromFavorites(@NonNull MovieDetail favoriteMovieElement) {
+        performJob(favoriteDao.delete(favoriteMovieElement));
+    }
+
+    public void getFavorites() {
+        //todo performJob with consumable T
+        attachDisposable(scheduleThreads(favoriteDao.getAll()).subscribe(screen::showFavorites, Throwable::printStackTrace));
     }
 
     public void searchMovie(final String movieTitle) {

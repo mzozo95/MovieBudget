@@ -5,20 +5,25 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
+import com.majlathtech.moviebudget.network.model.MovieDetail;
+
 import java.util.List;
 
-@Dao
-public interface  FavoriteDao {/*
-https://developer.android.com/training/data-storage/room
-    @Query("SELECT * FROM user")
-    List<FavoriteMovieElement> getAll();
+import io.reactivex.Completable;
+import io.reactivex.Single;
 
-    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
-    List<User> loadAllByIds(int[] userIds);
+@Dao
+public interface  FavoriteDao {
+//https://developer.android.com/training/data-storage/room
+    @Query("SELECT * FROM movieDetail")
+    Single<List<MovieDetail>> getAll();
+
+    @Query("SELECT * FROM movieDetail WHERE id IN (:ids)")
+    Single<List<MovieDetail>> loadAllByIds(int[] ids);
 
     @Insert
-    void insertAll(User... users);
+    Completable insertAll(MovieDetail... favoriteMovieElements);
 
     @Delete
-    void delete(User user);*/
+    Completable delete(MovieDetail favoriteMovieElement);
 }

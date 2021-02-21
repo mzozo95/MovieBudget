@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.majlathtech.moviebudget.R;
 import com.majlathtech.moviebudget.network.model.MovieDetail;
 import com.majlathtech.moviebudget.network.util.MovieUtil;
@@ -70,11 +69,14 @@ public class MovieListItemAdapter extends RecyclerView.Adapter<MovieListItemAdap
         holder.cbFavorite.setOnCheckedChangeListener((compoundButton, isChecked) -> {
                     if (isChecked) {
                         favorites.add(movie);
+                        if (listener != null) {
+                            listener.onFavoriteAdded(movie);
+                        }
                     } else {
                         favorites.remove(movie);
-                    }
-                    if (listener != null) {
-                        listener.onFavoriteChangeApplied(new HashSet<>(favorites));
+                        if (listener != null) {
+                            listener.onFavoriteDeleted(movie);
+                        }
                     }
                 }
         );
@@ -98,7 +100,10 @@ public class MovieListItemAdapter extends RecyclerView.Adapter<MovieListItemAdap
     }
 
     public interface OnItemChangedListener {
-        void onFavoriteChangeApplied(Set<MovieDetail> favorites);
+
+        void onFavoriteAdded(MovieDetail favorite);
+
+        void onFavoriteDeleted(MovieDetail favorites);
     }
 }
 
