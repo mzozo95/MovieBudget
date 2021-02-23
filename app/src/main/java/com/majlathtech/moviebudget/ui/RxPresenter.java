@@ -2,6 +2,8 @@ package com.majlathtech.moviebudget.ui;
 
 import android.util.Log;
 
+import java.util.Date;
+
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
@@ -66,34 +68,32 @@ public class RxPresenter<S> extends Presenter<S> {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    protected <T> void performRequest(Single<T> o, Consumer<T> onSuccess, Consumer<? super Throwable> onError) {
+    protected <T> void performTask(Single<T> o, Consumer<T> onSuccess, Consumer<? super Throwable> onError) {
         attachDisposable(scheduleThreads(o).subscribe(onSuccess, onError));
     }
 
-    protected <T> void performRequest(Observable<T> o, Consumer<T> onSuccess, Consumer<? super Throwable> onError) {
+    protected <T> void performTask(Observable<T> o, Consumer<T> onSuccess, Consumer<? super Throwable> onError) {
         attachDisposable(scheduleThreads(o).subscribe(onSuccess, onError));
     }
 
-    protected <T> void performRequest(Observable<T> o, Consumer<T> s) {
-        attachDisposable(scheduleThreads(o).subscribe(s, Throwable::printStackTrace));
+    protected <T> void performTask(Observable<T> o, Consumer<T> s) {
+        performTask(o, s, Throwable::printStackTrace);
     }
 
-    protected void performJob(Completable completable, Consumer<Throwable> throwableConsumer) {
+    protected void performTask(Completable completable, Consumer<Throwable> throwableConsumer) {
+        long startTime = new Date().getTime();
         attachDisposable(scheduleThreads(completable)
                 .subscribe(() -> {
+                    Log.d(TAG, "CompletableTask finished in " + (new Date().getTime() - startTime) + "ms");
                 }, throwableConsumer));
     }
 
-    protected void performJob(Completable completable) {
-        attachDisposable(scheduleThreads(completable)
-                .subscribe(() -> {
-                }, Throwable::printStackTrace));
+    protected void performTask(Completable completable) {
+        performTask(completable, Throwable::printStackTrace);
     }
 
-    protected <T> void performJob(Runnable runnable) {
-        //https://stackoverflow.com/a/50674098
-        attachDisposable(scheduleThreads(Completable.fromRunnable(runnable))
-                .subscribe(() -> Log.d(TAG, "Presenter's job completed"), Throwable::printStackTrace));
+    protected <T> void performTask(Runnable runnable) {
+        performTask(Completable.fromRunnable(runnable));
     }
 }
 

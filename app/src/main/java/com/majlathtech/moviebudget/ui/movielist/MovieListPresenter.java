@@ -30,16 +30,15 @@ public class MovieListPresenter extends RxPresenter<MovieListScreen> {
     }
 
     public void addToFavorites(@NonNull MovieDetail... favoriteMovieElements) {
-        performJob(favoriteDao.insertAll(favoriteMovieElements));
+        performTask(favoriteDao.insertAll(favoriteMovieElements));
     }
 
     public void removeFromFavorites(@NonNull MovieDetail favoriteMovieElement) {
-        performJob(favoriteDao.delete(favoriteMovieElement));
+        performTask(favoriteDao.delete(favoriteMovieElement));
     }
 
     public void getFavorites() {
-        //todo performJob with consumable T
-        attachDisposable(scheduleThreads(favoriteDao.getAll()).subscribe(screen::showFavorites, Throwable::printStackTrace));
+        performTask(favoriteDao.getAll(), screen::showFavorites, Throwable::printStackTrace);
     }
 
     public void searchMovie(final String movieTitle) {
@@ -47,7 +46,7 @@ public class MovieListPresenter extends RxPresenter<MovieListScreen> {
             screen.showMovies(new ArrayList<>());
             return;
         }
-        performRequest(movieService.searchMovie(movieTitle),
+        performTask(movieService.searchMovie(movieTitle),
                 movieDetails -> screen.showMovies(movieDetails),
                 throwable -> {
                     throwable.printStackTrace();
