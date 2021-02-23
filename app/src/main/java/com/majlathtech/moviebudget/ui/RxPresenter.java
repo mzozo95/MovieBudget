@@ -69,11 +69,19 @@ public class RxPresenter<S> extends Presenter<S> {
     }
 
     protected <T> void performTask(Single<T> o, Consumer<T> onSuccess, Consumer<? super Throwable> onError) {
-        attachDisposable(scheduleThreads(o).subscribe(onSuccess, onError));
+        long startTime = new Date().getTime();
+        attachDisposable(scheduleThreads(o).subscribe(t -> {
+            Log.d(TAG, "Single finished in " + (new Date().getTime() - startTime) + "ms");
+            onSuccess.accept(t);
+        }, onError));
     }
 
     protected <T> void performTask(Observable<T> o, Consumer<T> onSuccess, Consumer<? super Throwable> onError) {
-        attachDisposable(scheduleThreads(o).subscribe(onSuccess, onError));
+        long startTime = new Date().getTime();
+        attachDisposable(scheduleThreads(o).subscribe(t -> {
+            Log.d(TAG, "Observable finished in " + (new Date().getTime() - startTime) + "ms");
+            onSuccess.accept(t);
+        }, onError));
     }
 
     protected <T> void performTask(Observable<T> o, Consumer<T> s) {
