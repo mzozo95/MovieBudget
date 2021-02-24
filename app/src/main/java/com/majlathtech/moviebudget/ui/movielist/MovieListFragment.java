@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.majlathtech.moviebudget.R;
 import com.majlathtech.moviebudget.network.model.MovieDetail;
-import com.majlathtech.moviebudget.ui.movielist.adapter.MovieListItemAdapter;
 
 import java.util.HashSet;
 import java.util.List;

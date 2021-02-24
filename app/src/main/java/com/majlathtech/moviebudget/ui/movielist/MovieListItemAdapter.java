@@ -1,4 +1,4 @@
-package com.majlathtech.moviebudget.ui.movielist.adapter;
+package com.majlathtech.moviebudget.ui.movielist;
 
 import android.content.Context;
 import android.view.LayoutInflater;
