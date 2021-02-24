@@ -10,12 +10,6 @@
         android:name="com.majlathtech.moviebudget.ui.movielist.MovieListFragment"
         android:label="fragment_movie_list_screen"
         tools:layout="@layout/fragment_movie_list">
-        <action
-            android:id="@+id/action_to_favorites"
-            app:destination="@id/favorites"
-            app:launchSingleTop="true"
-            app:popUpTo="@+id/navigation"
-            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -23,11 +17,5 @@
         android:name="com.majlathtech.moviebudget.ui.favorite.FavoriteFragment"
         android:label="fragment_favorite_list_screen"
         tools:layout="@layout/fragment_movie_list">
-        <action
-            android:id="@+id/action_to_search"
-            app:destination="@id/search"
-            app:launchSingleTop="true"
-            app:popUpTo="@+id/navigation"
-            app:popUpToInclusive="true" />
     </fragment>
 </navigation>
