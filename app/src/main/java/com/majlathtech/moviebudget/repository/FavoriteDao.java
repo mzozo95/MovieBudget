@@ -14,7 +14,6 @@ import io.reactivex.Single;
 
 @Dao
 public interface  FavoriteDao {
-//https://developer.android.com/training/data-storage/room
     @Query("SELECT * FROM movieDetail")
     Single<List<MovieDetail>> getAll();
 

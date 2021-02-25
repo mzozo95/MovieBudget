@@ -1,4 +1,4 @@
-package com.majlathtech.moviebudget.ui;
+package com.majlathtech.moviebudget.ui.base;
 
 import android.util.Log;
 

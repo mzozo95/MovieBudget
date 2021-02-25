@@ -1,4 +1,4 @@
-package com.majlathtech.moviebudget.ui;
+package com.majlathtech.moviebudget.ui.base;
 
 public abstract class Presenter<S> {
     protected S screen;

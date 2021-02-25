@@ -3,7 +3,6 @@ package com.majlathtech.moviebudget.ui;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.majlathtech.moviebudget.network.util.MovieUtil;
 
 public class UiTools {
     public static void loadImage(ImageView targetView, String imageUrl){

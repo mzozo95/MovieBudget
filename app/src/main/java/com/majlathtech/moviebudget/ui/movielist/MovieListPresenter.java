@@ -9,15 +9,13 @@ import com.majlathtech.moviebudget.network.model.MovieDetail;
 import com.majlathtech.moviebudget.network.service.MovieService;
 import com.majlathtech.moviebudget.repository.FavoriteDao;
 import com.majlathtech.moviebudget.repository.FavoriteDatabase;
-import com.majlathtech.moviebudget.ui.RxPresenter;
+import com.majlathtech.moviebudget.ui.base.RxPresenter;
 
 import java.util.ArrayList;
 
 import javax.inject.Inject;
 
 public class MovieListPresenter extends RxPresenter<MovieListScreen> {
-    private static final String TAG = MovieListPresenter.class.getSimpleName();
-
     private final Context context;
     private final MovieService movieService;
     private final FavoriteDao favoriteDao;

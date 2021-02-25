@@ -5,12 +5,11 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
-import com.majlathtech.moviebudget.ui.composite.model.Listable;
 
 import java.util.Objects;
 
 @Entity
-public class MovieDetail implements Listable {
+public class MovieDetail {
     @PrimaryKey
     public int id;
     public int budget;
