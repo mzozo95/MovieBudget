@@ -25,8 +25,19 @@ public class MovieService {
         injector.inject(this);
     }
 
+    //Fetch more pages recursively
+    private Observable<MovieResponse> getPageAndNext(String movieName, int page, int maxPageNumber) {
+        return movieApi.searchMovie(movieName, page)
+                .concatMap((Function<MovieResponse, Observable<MovieResponse>>) movieResponse -> {
+                    if (movieResponse.getTotalPages() == movieResponse.getPage() || movieResponse.getPage() == maxPageNumber) {
+                        return Observable.just(movieResponse);
+                    }
+                    return Observable.just(movieResponse).concatWith(getPageAndNext(movieName, movieResponse.getPage() + 1, maxPageNumber));
+                });
+    }
+
     public Single<List<MovieDetail>> searchMovie(String movieName) {
-        return movieApi.searchMovie(movieName)//Todo handle pages?
+        return getPageAndNext(movieName, 1, 3)
                 .flatMap((Function<MovieResponse, Observable<Movie>>) movieResponse -> Observable.fromIterable(movieResponse.getResults()))// flatMap - to return details one by one from SearchListResponse
                 .flatMap((Function<Movie, Observable<MovieDetail>>) movie -> movieApi.getMovieDetails(movie.getId()))// and returns the corresponding getMovieDetailObservable for the specific ID
                 .subscribeOn(Schedulers.io())

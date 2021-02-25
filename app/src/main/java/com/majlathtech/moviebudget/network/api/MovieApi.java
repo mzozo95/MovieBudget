@@ -12,6 +12,10 @@ public interface MovieApi {
     @GET("/3/search/movie")
     Observable<MovieResponse> searchMovie(@Query("query") String movieName);
 
+    @GET("/3/search/movie")
+    Observable<MovieResponse> searchMovie(@Query("query") String movieName, @Query("page") int page);
+
     @GET("/3/movie/{movie_id}")
     Observable<MovieDetail> getMovieDetails(@Path("movie_id") int movieId);
+
 }
