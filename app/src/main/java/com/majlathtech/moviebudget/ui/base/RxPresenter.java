@@ -17,7 +17,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class RxPresenter<S> extends Presenter<S> {
     public static final String TAG = "RxPresenter";
-    private CompositeDisposable compositeSubscription;
+    private CompositeDisposable compositeDisposable;
 
     public RxPresenter() {
     }
@@ -25,45 +25,45 @@ public class RxPresenter<S> extends Presenter<S> {
     @Override
     public void attachScreen(S screen) {
         super.attachScreen(screen);
-        if (compositeSubscription != null) {
-            compositeSubscription.dispose();
+        if (compositeDisposable != null) {
+            compositeDisposable.dispose();
         }
-        compositeSubscription = new CompositeDisposable();
+        compositeDisposable = new CompositeDisposable();
     }
 
     @Override
     public void detachScreen() {
-        if (compositeSubscription != null) {
-            compositeSubscription.dispose();
+        if (compositeDisposable != null) {
+            compositeDisposable.dispose();
         }
         super.detachScreen();
     }
 
-    public void attachDisposable(Disposable subscription) {
-        compositeSubscription.add(subscription);
+    public void attachDisposable(Disposable disposable) {
+        compositeDisposable.add(disposable);
     }
 
-    public <T> Maybe<T> scheduleThreads(Maybe<T> o) {
+    private <T> Maybe<T> scheduleThreads(Maybe<T> o) {
         return o.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Completable scheduleThreads(Completable o) {
+    private Completable scheduleThreads(Completable o) {
         return o.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public <T> Single<T> scheduleThreads(Single<T> o) {
+    private <T> Single<T> scheduleThreads(Single<T> o) {
         return o.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public <T> Flowable<T> scheduleThreads(Flowable<T> o) {
+    private <T> Flowable<T> scheduleThreads(Flowable<T> o) {
         return o.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public <T> Observable<T> scheduleThreads(Observable<T> o) {
+    private <T> Observable<T> scheduleThreads(Observable<T> o) {
         return o.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -71,7 +71,7 @@ public class RxPresenter<S> extends Presenter<S> {
     protected <T> void performTask(Single<T> o, Consumer<T> onSuccess, Consumer<? super Throwable> onError) {
         long startTime = new Date().getTime();
         attachDisposable(scheduleThreads(o).subscribe(t -> {
-            Log.d(TAG, "Single finished in " + (new Date().getTime() - startTime) + "ms");
+            Log.d(TAG, "Single task finished in " + (new Date().getTime() - startTime) + "ms");
             onSuccess.accept(t);
         }, onError));
     }
@@ -79,7 +79,7 @@ public class RxPresenter<S> extends Presenter<S> {
     protected <T> void performTask(Observable<T> o, Consumer<T> onSuccess, Consumer<? super Throwable> onError) {
         long startTime = new Date().getTime();
         attachDisposable(scheduleThreads(o).subscribe(t -> {
-            Log.d(TAG, "Observable finished in " + (new Date().getTime() - startTime) + "ms");
+            Log.d(TAG, "Observable task finished in " + (new Date().getTime() - startTime) + "ms");
             onSuccess.accept(t);
         }, onError));
     }
@@ -100,7 +100,7 @@ public class RxPresenter<S> extends Presenter<S> {
         performTask(completable, Throwable::printStackTrace);
     }
 
-    protected <T> void performTask(Runnable runnable) {
+    protected void performTask(Runnable runnable) {
         performTask(Completable.fromRunnable(runnable));
     }
 }
