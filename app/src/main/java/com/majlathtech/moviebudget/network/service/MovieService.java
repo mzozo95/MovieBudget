@@ -5,6 +5,7 @@ import com.majlathtech.moviebudget.network.model.Movie;
 import com.majlathtech.moviebudget.network.model.MovieDetail;
 import com.majlathtech.moviebudget.network.model.MovieResponse;
 
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -41,10 +42,7 @@ public class MovieService {
                 .flatMap((Function<MovieResponse, Observable<Movie>>) movieResponse -> Observable.fromIterable(movieResponse.getResults()))// flatMap - to return details one by one from SearchListResponse
                 .flatMap((Function<Movie, Observable<MovieDetail>>) movie -> movieApi.getMovieDetails(movie.getId()))// and returns the corresponding getMovieDetailObservable for the specific ID
                 .subscribeOn(Schedulers.io())
-                .toList()
-                .map(movieDetails -> {
-                    movieDetails.sort((movieDetail, t1) -> t1.getBudget() - movieDetail.getBudget());
-                    return movieDetails;
-                }).subscribeOn(Schedulers.computation());
+                .toSortedList((o1, o2) -> o2.getBudget() - o1.getBudget())
+                .subscribeOn(Schedulers.computation());
     }
 }
