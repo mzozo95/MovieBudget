@@ -1,4 +1,4 @@
-# MovieBudget application uses themoviedb.org API to fetch informations about movies or series.
+# MovieBudget application uses themoviedb.org API to fetch information about movies or series.
 
 This project's main purpose is to demonstrate the MVP pattern with dependency injection in Android environment with a minimal UI.
 
