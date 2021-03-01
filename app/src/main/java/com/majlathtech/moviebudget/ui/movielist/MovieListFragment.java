@@ -37,8 +37,6 @@ public class MovieListFragment extends Fragment implements MovieListScreen, Movi
     @Inject
     MovieListPresenter presenter;
 
-    MovieListItemAdapter movieAdapter;
-
     @BindView(R.id.tvEmpty)
     TextView tvEmpty;
     @BindView(R.id.etSearch)
@@ -50,6 +48,8 @@ public class MovieListFragment extends Fragment implements MovieListScreen, Movi
     Unbinder unbinder;
     @BindView(R.id.pbDownload)
     ProgressBar pbDownload;
+
+    MovieListItemAdapter movieAdapter;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -70,14 +70,10 @@ public class MovieListFragment extends Fragment implements MovieListScreen, Movi
         movieAdapter.setListener(this);
         recyclerView.setAdapter(movieAdapter);
 
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         presenter.attachScreen(this);
         presenter.getFavorites();
+
+        return view;
     }
 
     @Override

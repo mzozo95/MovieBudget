@@ -19,9 +19,6 @@ public class RxPresenter<S> extends Presenter<S> {
     public static final String TAG = "RxPresenter";
     private CompositeDisposable compositeDisposable;
 
-    public RxPresenter() {
-    }
-
     @Override
     public void attachScreen(S screen) {
         super.attachScreen(screen);
