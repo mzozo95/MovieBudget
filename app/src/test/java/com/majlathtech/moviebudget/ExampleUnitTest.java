@@ -3,7 +3,7 @@ package com.majlathtech.moviebudget;
 import com.majlathtech.moviebudget.network.model.MovieDetail;
 import com.majlathtech.moviebudget.network.util.MovieUtil;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import static org.junit.Assert.*;
 
@@ -15,9 +15,9 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
 
     @Test
-    public void imageURLTest() throws Exception {
+    public void imageURLTest() {
         MovieDetail movieDetail = new MovieDetail();
-        movieDetail.setPoster_path("8uO0gUM8aNqYLs1OsTBQiXu0fEv.jpg");
+        movieDetail.posterPath = "8uO0gUM8aNqYLs1OsTBQiXu0fEv.jpg";
         assertEquals(MovieUtil.generatePosterImageUrl(movieDetail), "https://image.tmdb.org/t/p/w500/8uO0gUM8aNqYLs1OsTBQiXu0fEv.jpg");
     }
 }
