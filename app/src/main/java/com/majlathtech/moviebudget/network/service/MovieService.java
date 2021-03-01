@@ -5,7 +5,6 @@ import com.majlathtech.moviebudget.network.model.Movie;
 import com.majlathtech.moviebudget.network.model.MovieDetail;
 import com.majlathtech.moviebudget.network.model.MovieResponse;
 
-import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -15,15 +14,12 @@ import io.reactivex.Single;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.majlathtech.moviebudget.MovieBudgetApplication.injector;
-
 public class MovieService {
-    @Inject
-    MovieApi movieApi;
+    final MovieApi movieApi;
 
     @Inject
-    public MovieService() {
-        injector.inject(this);
+    public MovieService(MovieApi movieApi) {
+        this.movieApi = movieApi;
     }
 
     //Fetch more pages recursively

@@ -1,9 +1,11 @@
 package com.majlathtech.moviebudget.ui.movielist;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -49,15 +51,10 @@ public class MovieListFragment extends Fragment implements MovieListScreen, Movi
     @BindView(R.id.pbDownload)
     ProgressBar pbDownload;
 
-    public MovieListFragment() {
+    @Override
+    public void onAttach(@NonNull Context context) {
         injector.inject(this);
-    }
-
-    public static MovieListFragment newInstance() {
-        MovieListFragment fragment = new MovieListFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+        super.onAttach(context);
     }
 
     @Override
@@ -130,8 +127,22 @@ public class MovieListFragment extends Fragment implements MovieListScreen, Movi
         unbinder.unbind();
     }
 
+    private void hideKeyboard() {
+        if (getActivity() == null) {
+            return;
+        }
+
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+
     @OnClick(R.id.btnSearch)
     public void onViewClicked() {
+        hideKeyboard();
         showLoading();
         presenter.searchMovie(etSearch.getText().toString());
         movieAdapter.clearItems();
