@@ -135,7 +135,6 @@ public class MovieListFragment extends Fragment implements MovieListScreen, Movi
         }
     }
 
-
     @OnClick(R.id.btnSearch)
     public void onViewClicked() {
         hideKeyboard();

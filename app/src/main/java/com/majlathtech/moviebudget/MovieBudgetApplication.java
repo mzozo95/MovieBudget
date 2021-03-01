@@ -19,5 +19,4 @@ public class MovieBudgetApplication extends Application {
                 .repositoryModule(new RepositoryModule(this))
                 .build();
     }
-
 }
