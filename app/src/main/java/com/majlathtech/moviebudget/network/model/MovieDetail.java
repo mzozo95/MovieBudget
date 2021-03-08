@@ -11,34 +11,22 @@ import java.util.Objects;
 @Entity
 public class MovieDetail {
     @PrimaryKey
-    public int id;
-    public int budget;
+    public final int id;
+    public final int budget;
     @ColumnInfo(name = "poster_path")
     @SerializedName("poster_path")
-    public String posterPath;
+    public final String posterPath;
     @ColumnInfo(name = "backdrop_path")
     @SerializedName("backdrop_path")
-    public String backdropPath;
-    public String title;
+    public final String backdropPath;
+    public final String title;
 
-    public int getId() {
-        return id;
-    }
-
-    public int getBudget() {
-        return budget;
-    }
-
-    public String getPosterPath() {
-        return posterPath;
-    }
-
-    public String getBackdropPath() {
-        return backdropPath;
-    }
-
-    public String getTitle() {
-        return title;
+    public MovieDetail(int id, int budget, String posterPath, String backdropPath, String title) {
+        this.id = id;
+        this.budget = budget;
+        this.posterPath = posterPath;
+        this.backdropPath = backdropPath;
+        this.title = title;
     }
 
     @Override

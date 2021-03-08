@@ -62,8 +62,8 @@ public class MovieListItemAdapter extends RecyclerView.Adapter<MovieListItemAdap
     public void onBindViewHolder(final MovieViewHolder holder, int position) {
         final MovieDetail movie = items.get(position);
         Context context = holder.tvTitle.getContext();
-        holder.tvTitle.setText(movie.getTitle());
-        holder.tvBudget.setText(String.format(context.getString(R.string.money_format), movie.getBudget()));
+        holder.tvTitle.setText(movie.title);
+        holder.tvBudget.setText(String.format(context.getString(R.string.money_format), movie.budget));
         holder.cbFavorite.setOnCheckedChangeListener(null);
         holder.cbFavorite.setChecked(favorites.contains(movie));
         holder.cbFavorite.setOnCheckedChangeListener((compoundButton, isChecked) -> {

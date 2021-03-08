@@ -51,7 +51,6 @@ public class NetworkModule {
                     return originalResponse.newBuilder()
                             .header("Cache-Control", "public, max-age=" + 60)
                             .build();
-
                 })
                 .cache(new Cache(new File(context.getCacheDir(), "apiResponses"), 5 * 1024 * 1024))
                 .addInterceptor(new ChuckInterceptor(context))
