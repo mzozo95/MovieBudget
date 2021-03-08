@@ -19,8 +19,8 @@ public class HeaderInterceptor implements Interceptor {
         HttpUrl originalHttpUrl = original.url();
 
         HttpUrl url = originalHttpUrl.newBuilder()
-                .addQueryParameter("api_key", NetworkConfig.API_KEY)
-                .addQueryParameter("language", NetworkConfig.LANGUAGE)
+                .addQueryParameter("api_key", NetworkConfig.MOVIE_API_KEY)
+                .addQueryParameter("language", NetworkConfig.MOVIE_LANGUAGE)
                 .build();
 
         Request.Builder requestBuilder = original.newBuilder()

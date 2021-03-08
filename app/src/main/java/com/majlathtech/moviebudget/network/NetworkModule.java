@@ -18,6 +18,7 @@ import dagger.Provides;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -31,9 +32,20 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    public Retrofit provideRetrofit() {
-        OkHttpClient client = new OkHttpClient.Builder()
+    public MovieApi provideMovieApi() {
+        return buildRetrofit(buildHttpClient(), NetworkConfig.MOVIE_API_BASE_URL).create(MovieApi.class);
+    }
+
+    @Provides
+    @Singleton
+    public Gson provideGson() {
+        return new GsonBuilder().create();
+    }
+
+    private OkHttpClient buildHttpClient() {
+        return new OkHttpClient.Builder()
                 .addInterceptor(new HeaderInterceptor())
+                .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
                 .addInterceptor(chain -> {
                     Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
@@ -44,25 +56,15 @@ public class NetworkModule {
                 .cache(new Cache(new File(context.getCacheDir(), "apiResponses"), 5 * 1024 * 1024))
                 .addInterceptor(new ChuckInterceptor(context))
                 .build();
+    }
 
+    private Retrofit buildRetrofit(OkHttpClient client, String baseUrl) {
         return new Retrofit.Builder()
                 .client(client)
-                .baseUrl(NetworkConfig.BASE_URL)
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
-    }
-
-    @Provides
-    @Singleton
-    public MovieApi provideMovieApi(Retrofit retrofit) {
-        return retrofit.create(MovieApi.class);
-    }
-
-    @Provides
-    @Singleton
-    public Gson provideGson() {
-        return new GsonBuilder().create();
     }
 }
 
