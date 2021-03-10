@@ -11,21 +11,53 @@ import java.util.Objects;
 @Entity
 public class MovieDetail {
     @PrimaryKey
-    public final int id;
-    public final int budget;
+    private int id;
+    private int budget;
     @ColumnInfo(name = "poster_path")
     @SerializedName("poster_path")
-    public final String posterPath;
+    private String posterPath;
     @ColumnInfo(name = "backdrop_path")
     @SerializedName("backdrop_path")
-    public final String backdropPath;
-    public final String title;
+    private String backdropPath;
+    private String title;
 
-    public MovieDetail(int id, int budget, String posterPath, String backdropPath, String title) {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
         this.id = id;
+    }
+
+    public int getBudget() {
+        return budget;
+    }
+
+    public void setBudget(int budget) {
         this.budget = budget;
+    }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public void setPosterPath(String posterPath) {
         this.posterPath = posterPath;
+    }
+
+    public String getBackdropPath() {
+        return backdropPath;
+    }
+
+    public void setBackdropPath(String backdropPath) {
         this.backdropPath = backdropPath;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
         this.title = title;
     }
 

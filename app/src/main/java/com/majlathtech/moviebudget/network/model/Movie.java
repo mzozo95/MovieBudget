@@ -3,28 +3,49 @@ package com.majlathtech.moviebudget.network.model;
 import com.google.gson.annotations.SerializedName;
 
 public class Movie {
-    public final int id;
+    private int id;
     @SerializedName("poster_path")
-    public final String posterPath;
+    private String posterPath;
     @SerializedName("backdrop_path")
-    public final String backdropPath;
-    public final String overview;
+    private String backdropPath;
+    private String overview;
     @SerializedName("release_date")
-    public final String releaseDate;
+    private String releaseDate;
     @SerializedName("originalTitle")
-    public final String originalTitle;
-    public final String title;
+    private String originalTitle;
+    private String title;
     @SerializedName("voteAverage")
-    public final double voteAverage;
+    private double voteAverage;
 
-    public Movie(int id, String posterPath, String backdropPath, String overview, String releaseDate, String originalTitle, String title, double voteAverage) {
-        this.id = id;
-        this.posterPath = posterPath;
-        this.backdropPath = backdropPath;
-        this.overview = overview;
-        this.releaseDate = releaseDate;
-        this.originalTitle = originalTitle;
-        this.title = title;
-        this.voteAverage = voteAverage;
+    public int getId() {
+        return id;
+    }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public String getBackdropPath() {
+        return backdropPath;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public String getOriginalTitle() {
+        return originalTitle;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public double getVoteAverage() {
+        return voteAverage;
     }
 }
