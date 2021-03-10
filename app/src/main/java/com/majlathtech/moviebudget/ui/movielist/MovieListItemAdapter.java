@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.majlathtech.moviebudget.R;
 import com.majlathtech.moviebudget.network.model.MovieDetail;
-import com.majlathtech.moviebudget.network.util.MovieUtil;
+import com.majlathtech.moviebudget.network.tools.MovieTools;
 import com.majlathtech.moviebudget.ui.UiTools;
 
 import java.util.HashSet;
@@ -80,7 +80,7 @@ public class MovieListItemAdapter extends RecyclerView.Adapter<MovieListItemAdap
                     }
                 }
         );
-        UiTools.loadImage(holder.ivPoster, MovieUtil.generatePosterImageUrl(movie));
+        UiTools.loadImage(holder.ivPoster, MovieTools.generatePosterImageUrl(movie));
     }
 
     public static class MovieViewHolder extends RecyclerView.ViewHolder {
