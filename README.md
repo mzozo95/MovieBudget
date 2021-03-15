@@ -1,4 +1,4 @@
-# MovieBudget application.
+# MovieBudget application
 
 This project's main purpose is to demonstrate the MVP pattern with dependency injection in Android environment with a minimal UI.
 
@@ -25,4 +25,4 @@ Used libraries:
 
 Sample image of the application: 
 
-![sample image](images/sample_framed.png)
+![sample image](images/sample_framed2.png)
