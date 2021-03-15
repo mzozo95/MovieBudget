@@ -32,9 +32,9 @@ import butterknife.Unbinder;
 
 import static com.majlathtech.moviebudget.MovieBudgetApplication.injector;
 
-public class MovieListFragment extends Fragment implements MovieListScreen, MovieListItemAdapter.OnItemChangedListener {
+public class MovieSearchFragment extends Fragment implements MovieSearchScreen, MovieSearchItemAdapter.OnItemChangedListener {
     @Inject
-    MovieListPresenter presenter;
+    MovieSearchPresenter presenter;
 
     @BindView(R.id.tvEmpty)
     TextView tvEmpty;
@@ -48,7 +48,7 @@ public class MovieListFragment extends Fragment implements MovieListScreen, Movi
     @BindView(R.id.pbDownload)
     ProgressBar pbDownload;
 
-    MovieListItemAdapter movieAdapter;
+    MovieSearchItemAdapter movieAdapter;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -58,14 +58,14 @@ public class MovieListFragment extends Fragment implements MovieListScreen, Movi
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_movie_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_movie_search, container, false);
         unbinder = ButterKnife.bind(this, view);
 
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
-        movieAdapter = new MovieListItemAdapter();
+        movieAdapter = new MovieSearchItemAdapter();
         movieAdapter.setListener(this);
         recyclerView.setAdapter(movieAdapter);
 

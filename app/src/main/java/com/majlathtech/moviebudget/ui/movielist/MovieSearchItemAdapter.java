@@ -23,7 +23,7 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MovieListItemAdapter extends RecyclerView.Adapter<MovieListItemAdapter.MovieViewHolder> {
+public class MovieSearchItemAdapter extends RecyclerView.Adapter<MovieSearchItemAdapter.MovieViewHolder> {
     private List<MovieDetail> items;
     private Set<MovieDetail> favorites = new HashSet<>();
     private OnItemChangedListener listener;

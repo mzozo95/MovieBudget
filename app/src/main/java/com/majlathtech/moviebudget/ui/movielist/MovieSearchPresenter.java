@@ -18,13 +18,13 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-public class MovieListPresenter extends RxPresenter<MovieListScreen> {
+public class MovieSearchPresenter extends RxPresenter<MovieSearchScreen> {
     private final Context context;
     private final MovieService movieService;
     private final FavoriteDao favoriteDao;
 
     @Inject
-    public MovieListPresenter(Context context, MovieService movieService, FavoriteDao favoriteDao) {
+    public MovieSearchPresenter(Context context, MovieService movieService, FavoriteDao favoriteDao) {
         this.context = context;
         this.movieService = movieService;
         this.favoriteDao = favoriteDao;
