@@ -14,11 +14,8 @@ import io.reactivex.Single;
 
 @Dao
 public interface  FavoriteDao {
-    @Query("SELECT * FROM movieDetail")
+    @Query("SELECT * FROM movieDetail ORDER BY title")
     Single<List<MovieDetail>> getAll();
-
-    @Query("SELECT * FROM movieDetail WHERE id IN (:ids)")
-    Single<List<MovieDetail>> loadAllByIds(int[] ids);
 
     @Insert
     Completable insertAll(MovieDetail... favoriteMovieElements);

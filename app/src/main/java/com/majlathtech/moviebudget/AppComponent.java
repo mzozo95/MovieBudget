@@ -4,6 +4,7 @@ import com.majlathtech.moviebudget.network.NetworkModule;
 import com.majlathtech.moviebudget.network.service.MovieService;
 import com.majlathtech.moviebudget.repository.RepositoryModule;
 import com.majlathtech.moviebudget.ui.UIModule;
+import com.majlathtech.moviebudget.ui.moviefavorites.MovieFavoritesFragment;
 import com.majlathtech.moviebudget.ui.movielist.MovieSearchFragment;
 
 import javax.inject.Singleton;
@@ -16,4 +17,6 @@ public interface AppComponent {
     void inject(MovieService movieService);
 
     void inject(MovieSearchFragment movieSearchFragment);
+
+    void inject(MovieFavoritesFragment movieFavoritesFragment);
 }

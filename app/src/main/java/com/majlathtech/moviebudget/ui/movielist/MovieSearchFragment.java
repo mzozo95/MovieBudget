@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.majlathtech.moviebudget.R;
 import com.majlathtech.moviebudget.network.model.MovieDetail;
+import com.majlathtech.moviebudget.ui.main.MainActivity;
 
 import java.util.HashSet;
 import java.util.List;
@@ -36,15 +37,17 @@ public class MovieSearchFragment extends Fragment implements MovieSearchScreen, 
     @Inject
     MovieSearchPresenter presenter;
 
+    Unbinder unbinder;
     @BindView(R.id.tvEmpty)
     TextView tvEmpty;
     @BindView(R.id.etSearch)
     EditText etSearch;
     @BindView(R.id.btnSearch)
     Button btnSearch;
+    @BindView(R.id.btnFavorites)
+    Button btnFavorites;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
-    Unbinder unbinder;
     @BindView(R.id.pbDownload)
     ProgressBar pbDownload;
 
@@ -87,7 +90,7 @@ public class MovieSearchFragment extends Fragment implements MovieSearchScreen, 
 
     @Override
     public void showFavorites(List<MovieDetail> favoriteMovieElements) {
-        movieAdapter.setFavorites(new HashSet<>(favoriteMovieElements));//Todo show favorites, need a reason to save the whole objects
+        movieAdapter.setFavorites(new HashSet<>(favoriteMovieElements));
     }
 
     @Override
@@ -98,7 +101,7 @@ public class MovieSearchFragment extends Fragment implements MovieSearchScreen, 
             movieAdapter.setListItems(movieList);
         } else {
             tvEmpty.setText(R.string.no_items_to_show);
-            tvEmpty.setTextColor(getResources().getColor(R.color.defaultTextColor , null));
+            tvEmpty.setTextColor(getResources().getColor(R.color.defaultTextColor, null));
             tvEmpty.setVisibility(View.VISIBLE);
         }
     }
@@ -144,11 +147,25 @@ public class MovieSearchFragment extends Fragment implements MovieSearchScreen, 
         }
     }
 
-    @OnClick(R.id.btnSearch)
-    public void onViewClicked() {
-        hideKeyboard();
+    private void searchMovies(String title) {
         showLoading();
-        presenter.searchMovie(etSearch.getText().toString());
+        presenter.searchMovie(title);
         movieAdapter.clearItems();
+    }
+
+    @OnClick({R.id.btnSearch, R.id.btnFavorites})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.btnSearch:
+                hideKeyboard();
+                searchMovies(etSearch.getText().toString());
+                break;
+            case R.id.btnFavorites:
+                if (getActivity() instanceof MainActivity) {
+                    hideKeyboard();
+                    ((MainActivity) getActivity()).replaceFragment(MainActivity.FAVORITE_SCREEN);
+                }
+                break;
+        }
     }
 }

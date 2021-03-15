@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="8dp"
+    android:background="@android:color/white"
     android:orientation="vertical">
 
     <EditText
@@ -11,25 +14,42 @@
         android:layout_height="wrap_content"
         android:hint="@string/please_type_a_film_title_here" />
 
-    <LinearLayout
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="start|center"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/btnSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/search" />
+            android:text="@string/search"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
             android:id="@+id/pbDownload"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:indeterminate="true"
-            android:visibility="gone" />
-    </LinearLayout>
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btnSearch"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/btnFavorites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/favorites"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <RelativeLayout
         android:layout_width="match_parent"

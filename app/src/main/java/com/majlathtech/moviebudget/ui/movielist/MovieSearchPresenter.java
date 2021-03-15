@@ -62,9 +62,4 @@ public class MovieSearchPresenter extends RxPresenter<MovieSearchScreen> {
             screen.showError(context.getString(resourceId) + context.getString(R.string.error_code_with_value).replace("{code}", errorCode));
         }
     }
-
-    private void showError(@StringRes int resourceId, Throwable throwable) {
-        throwable.printStackTrace();
-        screen.showError(context.getString(resourceId));
-    }
 }
