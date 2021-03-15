@@ -22,4 +22,10 @@ public class RepositoryModule {
     public FavoriteDatabase provideFavoriteDb() {
         return Room.databaseBuilder(context, FavoriteDatabase.class, FavoriteDatabase.class.getSimpleName()).build();
     }
+
+    @Provides
+    @Singleton
+    public FavoriteDao provideFavoriteDao(FavoriteDatabase database) {
+        return database.favDao();
+    }
 }

@@ -6,5 +6,7 @@
     <string name="no_content_available">No content available!</string>
     <string name="list_downloaded">List downloaded!</string>
     <string name="unexpected_error_happened">Unexpected error happened!</string>
+    <string name="error_code_with_value">\nError code: {code}</string>
     <string name="no_items_to_show">No items to show.</string>
+    <string name="network_error">Network error happened.\nPlease check your network connection!</string>
 </resources>

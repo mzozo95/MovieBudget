@@ -3,7 +3,7 @@ package com.majlathtech.moviebudget.network.interceptor;
 
 import androidx.annotation.NonNull;
 
-import com.majlathtech.moviebudget.network.NetworkConfig;
+import com.majlathtech.moviebudget.network.service.MovieServiceConfig;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class HeaderInterceptor implements Interceptor {
+public class MovieParameterInterceptor implements Interceptor {
     @NonNull
     @Override
     public Response intercept(@NonNull Chain chain) throws IOException {
@@ -20,8 +20,8 @@ public class HeaderInterceptor implements Interceptor {
         HttpUrl originalHttpUrl = original.url();
 
         HttpUrl url = originalHttpUrl.newBuilder()
-                .addQueryParameter("api_key", NetworkConfig.MOVIE_API_KEY)
-                .addQueryParameter("language", NetworkConfig.MOVIE_LANGUAGE)
+                .addQueryParameter("api_key", MovieServiceConfig.getMovieApiKey())
+                .addQueryParameter("language", MovieServiceConfig.getMovieLanguage())
                 .build();
 
         Request.Builder requestBuilder = original.newBuilder()

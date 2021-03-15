@@ -87,7 +87,7 @@ public class MovieListFragment extends Fragment implements MovieListScreen, Movi
 
     @Override
     public void showFavorites(List<MovieDetail> favoriteMovieElements) {
-        movieAdapter.setFavorites(new HashSet<>(favoriteMovieElements));
+        movieAdapter.setFavorites(new HashSet<>(favoriteMovieElements));//Todo show favorites, need a reason to save the whole objects
     }
 
     @Override
@@ -97,6 +97,8 @@ public class MovieListFragment extends Fragment implements MovieListScreen, Movi
             tvEmpty.setVisibility(View.GONE);
             movieAdapter.setListItems(movieList);
         } else {
+            tvEmpty.setText(R.string.no_items_to_show);
+            tvEmpty.setTextColor(getResources().getColor(R.color.defaultTextColor , null));
             tvEmpty.setVisibility(View.VISIBLE);
         }
     }
@@ -105,6 +107,14 @@ public class MovieListFragment extends Fragment implements MovieListScreen, Movi
     public void showError(String errorMsg) {
         hideLoading();
         Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showNetworkError() {
+        hideLoading();
+        tvEmpty.setVisibility(View.VISIBLE);
+        tvEmpty.setText(R.string.network_error);
+        tvEmpty.setTextColor(getResources().getColor(R.color.errorTextColor, null));
     }
 
     public void hideLoading() {

@@ -22,23 +22,22 @@ public class MovieService {
         this.movieApi = movieApi;
     }
 
-    //Fetch more pages recursively
-    private Observable<MovieResponse> getPageAndNext(String movieName, int page, int maxPageNumber) {
+    public Single<List<MovieDetail>> searchMovie(String movieName) {
+        return getMovies(movieName, 1, 3)
+                .flatMap((Function<MovieResponse, Observable<Movie>>) movieResponse -> Observable.fromIterable(movieResponse.getResults()))
+                .flatMap((Function<Movie, Observable<MovieDetail>>) movie -> movieApi.getMovieDetails(movie.getId()))
+                .subscribeOn(Schedulers.io())
+                .toSortedList((o1, o2) -> o2.getBudget() - o1.getBudget())
+                .subscribeOn(Schedulers.computation());
+    }
+
+    private Observable<MovieResponse> getMovies(String movieName, int page, int maxPageNumber) {
         return movieApi.searchMovie(movieName, page)
                 .concatMap((Function<MovieResponse, Observable<MovieResponse>>) movieResponse -> {
                     if (movieResponse.getTotalPages() == movieResponse.getPage() || movieResponse.getPage() == maxPageNumber) {
                         return Observable.just(movieResponse);
                     }
-                    return Observable.just(movieResponse).concatWith(getPageAndNext(movieName, movieResponse.getPage() + 1, maxPageNumber));
+                    return Observable.just(movieResponse).concatWith(getMovies(movieName, movieResponse.getPage() + 1, maxPageNumber));
                 });
-    }
-
-    public Single<List<MovieDetail>> searchMovie(String movieName) {
-        return getPageAndNext(movieName, 1, 3)
-                .flatMap((Function<MovieResponse, Observable<Movie>>) movieResponse -> Observable.fromIterable(movieResponse.getResults()))// flatMap - to return details one by one from SearchListResponse
-                .flatMap((Function<Movie, Observable<MovieDetail>>) movie -> movieApi.getMovieDetails(movie.getId()))// and returns the corresponding getMovieDetailObservable for the specific ID
-                .subscribeOn(Schedulers.io())
-                .toSortedList((o1, o2) -> o2.getBudget() - o1.getBudget())
-                .subscribeOn(Schedulers.computation());
     }
 }

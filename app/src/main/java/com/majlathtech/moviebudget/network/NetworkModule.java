@@ -2,11 +2,10 @@ package com.majlathtech.moviebudget.network;
 
 import android.content.Context;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.majlathtech.moviebudget.network.api.MovieApi;
-import com.majlathtech.moviebudget.network.interceptor.HeaderInterceptor;
+import com.majlathtech.moviebudget.network.interceptor.MovieParameterInterceptor;
+import com.majlathtech.moviebudget.network.service.MovieServiceConfig;
 import com.readystatesoftware.chuck.ChuckInterceptor;
 
 import java.io.File;
@@ -33,18 +32,21 @@ public class NetworkModule {
     @Provides
     @Singleton
     public MovieApi provideMovieApi() {
-        return buildRetrofit(buildHttpClient(), NetworkConfig.MOVIE_API_BASE_URL).create(MovieApi.class);
+        return buildRetrofit(buildHttpClient(), MovieServiceConfig.getMovieApiBaseUrl()).create(MovieApi.class);
     }
 
-    @Provides
-    @Singleton
-    public Gson provideGson() {
-        return new GsonBuilder().create();
+    private Retrofit buildRetrofit(OkHttpClient client, String baseUrl) {
+        return new Retrofit.Builder()
+                .client(client)
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
     }
 
     private OkHttpClient buildHttpClient() {
         return new OkHttpClient.Builder()
-                .addInterceptor(new HeaderInterceptor())
+                .addInterceptor(new MovieParameterInterceptor())
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
                 .addInterceptor(chain -> {
                     Response originalResponse = chain.proceed(chain.request());
@@ -54,15 +56,6 @@ public class NetworkModule {
                 })
                 .cache(new Cache(new File(context.getCacheDir(), "apiResponses"), 5 * 1024 * 1024))
                 .addInterceptor(new ChuckInterceptor(context))
-                .build();
-    }
-
-    private Retrofit buildRetrofit(OkHttpClient client, String baseUrl) {
-        return new Retrofit.Builder()
-                .client(client)
-                .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
 }
