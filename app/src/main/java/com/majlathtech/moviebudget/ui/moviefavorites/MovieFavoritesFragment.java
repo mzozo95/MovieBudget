@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,9 +27,9 @@ import butterknife.Unbinder;
 
 import static com.majlathtech.moviebudget.MovieBudgetApplication.injector;
 
-public class MovieFavoritesFragment extends Fragment implements MovieFavoritesScreen {
+public class MovieFavoritesFragment extends Fragment {
     @Inject
-    MovieFavoritesPresenter presenter;
+    MovieFavoriteViewModel viewModel;
 
     Unbinder unbinder;
     @BindView(R.id.tvEmpty)
@@ -55,16 +56,24 @@ public class MovieFavoritesFragment extends Fragment implements MovieFavoritesSc
         recyclerView.setLayoutManager(llm);
         movieAdapter = new MovieFavoritesItemAdapter();
         recyclerView.setAdapter(movieAdapter);
-
-        presenter.attachScreen(this);
-        presenter.getFavorites();
-
         return view;
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        observableViewModel();
+        viewModel.fetchFavorites();
+    }
+
+    private void observableViewModel() {
+        viewModel.getFavorites().observe(getViewLifecycleOwner(), this::showFavorites);
+
+        viewModel.getError().observe(getViewLifecycleOwner(), this::showError);
+    }
+
     public void showFavorites(List<MovieDetail> favoriteMovieElements) {
-        if (favoriteMovieElements.size() > 0) {
+        if (favoriteMovieElements != null && favoriteMovieElements.size() > 0) {
             tvEmpty.setVisibility(View.GONE);
             movieAdapter.setListItems(favoriteMovieElements);
         } else {
@@ -73,7 +82,6 @@ public class MovieFavoritesFragment extends Fragment implements MovieFavoritesSc
         }
     }
 
-    @Override
     public void showError(String errorMsg) {
         Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
     }
@@ -81,7 +89,6 @@ public class MovieFavoritesFragment extends Fragment implements MovieFavoritesSc
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        presenter.detachScreen();
         unbinder.unbind();
     }
 }
