@@ -3,7 +3,6 @@ package com.majlathtech.moviebudget.ui.moviefavorites;
 import android.content.Context;
 
 import androidx.annotation.StringRes;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -26,7 +25,7 @@ public class MovieFavoriteViewModel extends ViewModel {
     private Context context;
     private final FavoriteDao favoriteDao;
 
-    private CompositeDisposable compositeDisposable;
+    private final CompositeDisposable compositeDisposable;
 
     private final MutableLiveData<List<MovieDetail>> favorites = new MutableLiveData<>();
     private final MutableLiveData<Boolean> loading = new MutableLiveData<>();

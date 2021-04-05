@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.majlathtech.moviebudget.R;
 import com.majlathtech.moviebudget.network.model.MovieDetail;
+import com.majlathtech.moviebudget.ui.UiTools;
+import com.majlathtech.moviebudget.ui.error.UiError;
 import com.majlathtech.moviebudget.ui.main.MainActivity;
 
 import java.util.HashSet;
@@ -33,9 +35,9 @@ import butterknife.Unbinder;
 
 import static com.majlathtech.moviebudget.MovieBudgetApplication.injector;
 
-public class MovieSearchFragment extends Fragment implements MovieSearchScreen, MovieSearchItemAdapter.OnItemChangedListener {
+public class MovieSearchFragment extends Fragment implements MovieSearchItemAdapter.OnItemChangedListener {
     @Inject
-    MovieSearchPresenter presenter;
+    MovieSearchViewModel viewModel;
 
     Unbinder unbinder;
     @BindView(R.id.tvEmpty)
@@ -72,30 +74,34 @@ public class MovieSearchFragment extends Fragment implements MovieSearchScreen, 
         movieAdapter.setListener(this);
         recyclerView.setAdapter(movieAdapter);
 
-        presenter.attachScreen(this);
-        presenter.getFavorites();
+        observableViewModel();
+        viewModel.fetchFavorites();
 
         return view;
     }
 
+    private void observableViewModel() {
+        viewModel.getFavorites().observe(getViewLifecycleOwner(), this::showFavorites);
+        viewModel.getMovies().observe(getViewLifecycleOwner(), this::showMovies);
+        viewModel.getLoading().observe(getViewLifecycleOwner(), this::showLoading);
+        viewModel.getError().observe(getViewLifecycleOwner(), this::showError);
+    }
+
     @Override
     public void onFavoriteAdded(MovieDetail favorite) {
-        presenter.addToFavorites(favorite);
+        viewModel.addToFavorites(favorite);
     }
 
     @Override
     public void onFavoriteDeleted(MovieDetail favorites) {
-        presenter.removeFromFavorites(favorites);
+        viewModel.removeFromFavorites(favorites);
     }
 
-    @Override
     public void showFavorites(List<MovieDetail> favoriteMovieElements) {
         movieAdapter.setFavorites(new HashSet<>(favoriteMovieElements));
     }
 
-    @Override
     public void showMovies(List<MovieDetail> movieList) {
-        hideLoading();
         if (movieList.size() != 0) {
             tvEmpty.setVisibility(View.GONE);
             movieAdapter.setListItems(movieList);
@@ -106,33 +112,23 @@ public class MovieSearchFragment extends Fragment implements MovieSearchScreen, 
         }
     }
 
-    @Override
-    public void showError(String errorMsg) {
-        hideLoading();
-        Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
+    public void showError(UiError uiError) {
+        switch (uiError.getType()) {
+            case Network:
+                tvEmpty.setVisibility(View.VISIBLE);
+                tvEmpty.setText(R.string.network_error);
+                tvEmpty.setTextColor(getResources().getColor(R.color.errorTextColor, null));
+                break;
+            case ErrorWithCode:
+                Toast.makeText(getActivity(), UiTools.exposeErrorText(tvEmpty.getContext(), uiError.getTextId(), uiError.getCode()), Toast.LENGTH_LONG).show();
+                break;
+            default:
+                Toast.makeText(getActivity(), R.string.unexpected_error_happened, Toast.LENGTH_LONG).show();
+        }
     }
 
-    @Override
-    public void showNetworkError() {
-        hideLoading();
-        tvEmpty.setVisibility(View.VISIBLE);
-        tvEmpty.setText(R.string.network_error);
-        tvEmpty.setTextColor(getResources().getColor(R.color.errorTextColor, null));
-    }
-
-    public void hideLoading() {
-        pbDownload.setVisibility(View.GONE);
-    }
-
-    public void showLoading() {
-        pbDownload.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        presenter.detachScreen();
-        unbinder.unbind();
+    public void showLoading(boolean loading) {
+        pbDownload.setVisibility(loading ? View.VISIBLE : View.GONE);
     }
 
     private void hideKeyboard() {
@@ -148,8 +144,7 @@ public class MovieSearchFragment extends Fragment implements MovieSearchScreen, 
     }
 
     private void searchMovies(String title) {
-        showLoading();
-        presenter.searchMovie(title);
+        viewModel.searchMovie(title);
         movieAdapter.clearItems();
     }
 
