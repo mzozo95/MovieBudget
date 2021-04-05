@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.majlathtech.moviebudget.R;
 import com.majlathtech.moviebudget.network.model.MovieDetail;
+import com.majlathtech.moviebudget.ui.UiTools;
+import com.majlathtech.moviebudget.ui.error.UiError;
 
 import java.util.List;
 
@@ -82,8 +84,8 @@ public class MovieFavoritesFragment extends Fragment {
         }
     }
 
-    public void showError(String errorMsg) {
-        Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
+    public void showError(UiError uiError) {
+        Toast.makeText(getActivity(), UiTools.exposeErrorText(tvEmpty.getContext(), uiError.getTextId(), uiError.getCode()), Toast.LENGTH_LONG).show();
     }
 
     @Override
