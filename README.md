@@ -14,7 +14,7 @@ Request your api key here: https://developers.themoviedb.org/3
 Used libraries: 
 - AndroidX
 - Retrofit
-- Okhttp3
+- OkHttp3
 - Gson
 - Chuck network debug
 - RxJava
