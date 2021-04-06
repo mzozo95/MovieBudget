@@ -1,6 +1,9 @@
 # MovieBudget application
 
-This project's main purpose is to demonstrate the MVP pattern with dependency injection in Android environment with a minimal UI.
+This project is a simple Android application with some fancy RX function to showcase the **MVVM** & **MVP** pattern with dependency injection and Network communication with a minimal UI.
+
+- For **MVP**, check out branch: *mvp-rx*
+- For **MVVM**, check out branch: *mvvm-rx*
 
 The app has 2 screens:
 
