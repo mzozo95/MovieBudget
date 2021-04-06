@@ -15,6 +15,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    buildFeatures {
+        viewBinding true
+    }
+
     buildTypes {
         buildTypes.each {
             //request your api key here: https://developers.themoviedb.org/3

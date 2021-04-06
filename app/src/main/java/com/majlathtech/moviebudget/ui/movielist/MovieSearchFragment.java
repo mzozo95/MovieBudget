@@ -6,54 +6,35 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.majlathtech.moviebudget.R;
+import com.majlathtech.moviebudget.databinding.FragmentMovieSearchBinding;
 import com.majlathtech.moviebudget.network.model.MovieDetail;
 import com.majlathtech.moviebudget.ui.UiTools;
 import com.majlathtech.moviebudget.ui.error.UiError;
 import com.majlathtech.moviebudget.ui.main.MainActivity;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-
 import static com.majlathtech.moviebudget.MovieBudgetApplication.injector;
 
 public class MovieSearchFragment extends Fragment implements MovieSearchItemAdapter.OnItemChangedListener {
+
     @Inject
     MovieSearchViewModel viewModel;
 
-    Unbinder unbinder;
-    @BindView(R.id.tvEmpty)
-    TextView tvEmpty;
-    @BindView(R.id.etSearch)
-    EditText etSearch;
-    @BindView(R.id.btnSearch)
-    Button btnSearch;
-    @BindView(R.id.btnFavorites)
-    Button btnFavorites;
-    @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
-    @BindView(R.id.pbDownload)
-    ProgressBar pbDownload;
-
     MovieSearchItemAdapter movieAdapter;
+    FragmentMovieSearchBinding binding;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -62,29 +43,33 @@ public class MovieSearchFragment extends Fragment implements MovieSearchItemAdap
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_movie_search, container, false);
-        unbinder = ButterKnife.bind(this, view);
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentMovieSearchBinding.inflate(getLayoutInflater());
 
-        recyclerView.setHasFixedSize(true);
+        binding.recyclerView.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(llm);
+        binding.recyclerView.setLayoutManager(llm);
         movieAdapter = new MovieSearchItemAdapter();
         movieAdapter.setListener(this);
-        recyclerView.setAdapter(movieAdapter);
+        binding.recyclerView.setAdapter(movieAdapter);
+
+        binding.btnSearch.setOnClickListener(view1 -> {
+            hideKeyboard();
+            searchMovies(binding.etSearch.getText().toString());
+        });
+
+        binding.btnFavorites.setOnClickListener(view12 -> {
+            if (getActivity() instanceof MainActivity) {
+                hideKeyboard();
+                ((MainActivity) getActivity()).replaceFragment(MainActivity.FAVORITE_SCREEN);
+            }
+        });
 
         observableViewModel();
         viewModel.fetchFavorites();
 
-        return view;
-    }
-
-    private void observableViewModel() {
-        viewModel.getFavorites().observe(getViewLifecycleOwner(), this::showFavorites);
-        viewModel.getMovies().observe(getViewLifecycleOwner(), this::showMovies);
-        viewModel.getLoading().observe(getViewLifecycleOwner(), this::showLoading);
-        viewModel.getError().observe(getViewLifecycleOwner(), this::showError);
+        return binding.getRoot();
     }
 
     @Override
@@ -97,38 +82,45 @@ public class MovieSearchFragment extends Fragment implements MovieSearchItemAdap
         viewModel.removeFromFavorites(favorites);
     }
 
-    public void showFavorites(List<MovieDetail> favoriteMovieElements) {
+    private void observableViewModel() {
+        viewModel.getFavorites().observe(getViewLifecycleOwner(), this::showFavorites);
+        viewModel.getMovies().observe(getViewLifecycleOwner(), this::showMovies);
+        viewModel.getLoading().observe(getViewLifecycleOwner(), this::showLoading);
+        viewModel.getError().observe(getViewLifecycleOwner(), this::showError);
+    }
+
+    private void showFavorites(List<MovieDetail> favoriteMovieElements) {
         movieAdapter.setFavorites(new HashSet<>(favoriteMovieElements));
     }
 
-    public void showMovies(List<MovieDetail> movieList) {
+    private void showMovies(List<MovieDetail> movieList) {
         if (movieList.size() != 0) {
-            tvEmpty.setVisibility(View.GONE);
+            binding.tvEmpty.setVisibility(View.GONE);
             movieAdapter.setListItems(movieList);
         } else {
-            tvEmpty.setText(R.string.no_items_to_show);
-            tvEmpty.setTextColor(getResources().getColor(R.color.defaultTextColor, null));
-            tvEmpty.setVisibility(View.VISIBLE);
+            binding.tvEmpty.setText(R.string.no_items_to_show);
+            binding.tvEmpty.setTextColor(getResources().getColor(R.color.defaultTextColor, null));
+            binding.tvEmpty.setVisibility(View.VISIBLE);
         }
     }
 
-    public void showError(UiError uiError) {
+    private void showError(UiError uiError) {
         switch (uiError.getType()) {
             case Network:
-                tvEmpty.setVisibility(View.VISIBLE);
-                tvEmpty.setText(R.string.network_error);
-                tvEmpty.setTextColor(getResources().getColor(R.color.errorTextColor, null));
+                binding.tvEmpty.setVisibility(View.VISIBLE);
+                binding.tvEmpty.setText(R.string.network_error);
+                binding.tvEmpty.setTextColor(getResources().getColor(R.color.errorTextColor, null));
                 break;
             case ErrorWithCode:
-                Toast.makeText(getActivity(), UiTools.exposeErrorText(tvEmpty.getContext(), uiError.getTextId(), uiError.getCode()), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), UiTools.exposeErrorText(binding.tvEmpty.getContext(), uiError.getTextId(), uiError.getCode()), Toast.LENGTH_LONG).show();
                 break;
             default:
                 Toast.makeText(getActivity(), R.string.unexpected_error_happened, Toast.LENGTH_LONG).show();
         }
     }
 
-    public void showLoading(boolean loading) {
-        pbDownload.setVisibility(loading ? View.VISIBLE : View.GONE);
+    private void showLoading(boolean loading) {
+        binding.pbDownload.setVisibility(loading ? View.VISIBLE : View.GONE);
     }
 
     private void hideKeyboard() {
@@ -148,19 +140,9 @@ public class MovieSearchFragment extends Fragment implements MovieSearchItemAdap
         movieAdapter.clearItems();
     }
 
-    @OnClick({R.id.btnSearch, R.id.btnFavorites})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.btnSearch:
-                hideKeyboard();
-                searchMovies(etSearch.getText().toString());
-                break;
-            case R.id.btnFavorites:
-                if (getActivity() instanceof MainActivity) {
-                    hideKeyboard();
-                    ((MainActivity) getActivity()).replaceFragment(MainActivity.FAVORITE_SCREEN);
-                }
-                break;
-        }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }
