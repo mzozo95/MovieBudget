@@ -12,6 +12,7 @@ import com.majlathtech.moviebudget.network.service.MovieServiceErrorCodes;
 import com.majlathtech.moviebudget.repository.FavoriteDao;
 import com.majlathtech.moviebudget.repository.FavoriteDatabaseErrorCodes;
 import com.majlathtech.moviebudget.ui.RxTools;
+import com.majlathtech.moviebudget.ui.error.NetworkError;
 import com.majlathtech.moviebudget.ui.error.UiError;
 
 import java.io.IOException;
@@ -23,7 +24,6 @@ import javax.inject.Inject;
 import io.reactivex.disposables.CompositeDisposable;
 
 import static com.majlathtech.moviebudget.ui.error.UiError.Type.ErrorWithCode;
-import static com.majlathtech.moviebudget.ui.error.UiError.Type.Network;
 
 public class MovieSearchViewModel extends ViewModel {
     private final MovieService movieService;
@@ -103,7 +103,7 @@ public class MovieSearchViewModel extends ViewModel {
         loading.setValue(false);
         throwable.printStackTrace();
         if (throwable instanceof IOException) {
-            error.setValue(new UiError(Network));
+            error.setValue(new NetworkError());
         } else {
             error.setValue(new UiError(ErrorWithCode, resourceId, errorCode));
         }
