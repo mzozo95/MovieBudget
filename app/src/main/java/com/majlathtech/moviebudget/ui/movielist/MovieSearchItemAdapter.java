@@ -2,26 +2,22 @@ package com.majlathtech.moviebudget.ui.movielist;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.majlathtech.moviebudget.R;
+import com.majlathtech.moviebudget.databinding.ItemMovieDetailBinding;
 import com.majlathtech.moviebudget.network.model.MovieDetail;
 import com.majlathtech.moviebudget.network.tools.MovieTools;
 import com.majlathtech.moviebudget.ui.UiTools;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MovieSearchItemAdapter extends RecyclerView.Adapter<MovieSearchItemAdapter.MovieViewHolder> {
     private List<MovieDetail> items;
@@ -53,20 +49,25 @@ public class MovieSearchItemAdapter extends RecyclerView.Adapter<MovieSearchItem
 
     @NonNull
     @Override
-    public MovieViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_movie_detail, viewGroup, false);
-        return new MovieViewHolder(itemView);
+    public MovieViewHolder onCreateViewHolder(@NotNull ViewGroup viewGroup, int i) {
+        ItemMovieDetailBinding binding =
+                ItemMovieDetailBinding.inflate(
+                        LayoutInflater.from(viewGroup.getContext()),
+                        viewGroup,
+                        false);
+
+        return new MovieViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(final MovieViewHolder holder, int position) {
         final MovieDetail movie = items.get(position);
-        Context context = holder.tvTitle.getContext();
-        holder.tvTitle.setText(movie.getTitle());
-        holder.tvBudget.setText(String.format(context.getString(R.string.money_format), movie.getBudget()));
-        holder.cbFavorite.setOnCheckedChangeListener(null);
-        holder.cbFavorite.setChecked(favorites.contains(movie));
-        holder.cbFavorite.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+        Context context = holder.binding.tvTitle.getContext();
+        holder.binding.tvTitle.setText(movie.getTitle());
+        holder.binding.tvBudget.setText(String.format(context.getString(R.string.money_format), movie.getBudget()));
+        holder.binding.cbFavorite.setOnCheckedChangeListener(null);
+        holder.binding.cbFavorite.setChecked(favorites.contains(movie));
+        holder.binding.cbFavorite.setOnCheckedChangeListener((compoundButton, isChecked) -> {
                     if (isChecked) {
                         favorites.add(movie);
                         if (listener != null) {
@@ -80,22 +81,15 @@ public class MovieSearchItemAdapter extends RecyclerView.Adapter<MovieSearchItem
                     }
                 }
         );
-        UiTools.loadImage(holder.ivPoster, MovieTools.generatePosterImageUrl(movie));
+        UiTools.loadImage(holder.binding.ivPoster, MovieTools.generatePosterImageUrl(movie));
     }
 
     public static class MovieViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.tvTitle)
-        TextView tvTitle;
-        @BindView(R.id.tvBudget)
-        TextView tvBudget;
-        @BindView(R.id.ivPoster)
-        ImageView ivPoster;
-        @BindView(R.id.cbFavorite)
-        CheckBox cbFavorite;
+        ItemMovieDetailBinding binding;
 
-        public MovieViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
+        public MovieViewHolder(ItemMovieDetailBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 

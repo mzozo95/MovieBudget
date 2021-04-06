@@ -5,16 +5,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.majlathtech.moviebudget.R;
+import com.majlathtech.moviebudget.databinding.FragmentMovieFavoritesBinding;
 import com.majlathtech.moviebudget.network.model.MovieDetail;
 import com.majlathtech.moviebudget.ui.UiTools;
 import com.majlathtech.moviebudget.ui.error.UiError;
@@ -23,23 +22,15 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-
 import static com.majlathtech.moviebudget.MovieBudgetApplication.injector;
 
 public class MovieFavoritesFragment extends Fragment {
+
     @Inject
     MovieFavoriteViewModel viewModel;
 
-    Unbinder unbinder;
-    @BindView(R.id.tvEmpty)
-    TextView tvEmpty;
-    @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
-
     MovieFavoritesItemAdapter movieAdapter;
+    FragmentMovieFavoritesBinding binding;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -49,16 +40,15 @@ public class MovieFavoritesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_movie_favorites, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        binding = FragmentMovieFavoritesBinding.inflate(getLayoutInflater());
 
-        recyclerView.setHasFixedSize(true);
+        binding.recyclerView.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(llm);
+        binding.recyclerView.setLayoutManager(llm);
         movieAdapter = new MovieFavoritesItemAdapter();
-        recyclerView.setAdapter(movieAdapter);
-        return view;
+        binding.recyclerView.setAdapter(movieAdapter);
+        return binding.getRoot();
     }
 
     @Override
@@ -76,21 +66,21 @@ public class MovieFavoritesFragment extends Fragment {
 
     public void showFavorites(List<MovieDetail> favoriteMovieElements) {
         if (favoriteMovieElements != null && favoriteMovieElements.size() > 0) {
-            tvEmpty.setVisibility(View.GONE);
+            binding.tvEmpty.setVisibility(View.GONE);
             movieAdapter.setListItems(favoriteMovieElements);
         } else {
-            tvEmpty.setText(R.string.no_favorites_to_show);
-            tvEmpty.setVisibility(View.VISIBLE);
+            binding.tvEmpty.setText(R.string.no_favorites_to_show);
+            binding.tvEmpty.setVisibility(View.VISIBLE);
         }
     }
 
     public void showError(UiError uiError) {
-        Toast.makeText(getActivity(), UiTools.exposeErrorText(tvEmpty.getContext(), uiError.getTextId(), uiError.getCode()), Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), UiTools.exposeErrorText(binding.tvEmpty.getContext(), uiError.getTextId(), uiError.getCode()), Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onDestroyView() {
+        binding = null;
         super.onDestroyView();
-        unbinder.unbind();
     }
 }
