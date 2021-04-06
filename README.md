@@ -2,8 +2,10 @@
 
 This project is a simple Android application with some fancy RX function to showcase the **MVVM** & **MVP** pattern with dependency injection and Network communication with a minimal UI.
 
-- For **MVP**, check out branch: *mvp-rx*
+- For **MVVM + ViewBinding**, check out branch: *mvvm-rx-viewbinding* / *master*
 - For **MVVM**, check out branch: *mvvm-rx*
+- For **MVP**, check out branch: *mvp-rx*
+
 
 The app has 2 screens:
 
