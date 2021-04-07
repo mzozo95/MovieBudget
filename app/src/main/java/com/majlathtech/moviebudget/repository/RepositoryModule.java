@@ -11,15 +11,12 @@ import dagger.Provides;
 
 @Module
 public class RepositoryModule {
-    private final Context context;
-
-    public RepositoryModule(Context context) {
-        this.context = context;
+    public RepositoryModule() {
     }
 
     @Provides
     @Singleton
-    public FavoriteDatabase provideFavoriteDb() {
+    public FavoriteDatabase provideFavoriteDb(Context context) {
         return Room.databaseBuilder(context, FavoriteDatabase.class, FavoriteDatabase.class.getSimpleName()).build();
     }
 

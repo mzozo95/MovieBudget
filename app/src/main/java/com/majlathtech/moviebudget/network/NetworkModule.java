@@ -23,16 +23,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class NetworkModule {
-    private final Context context;
-
-    public NetworkModule(Context context) {
-        this.context = context;
-    }
-
     @Provides
     @Singleton
-    public MovieApi provideMovieApi() {
-        return buildRetrofit(buildHttpClient(), MovieServiceConfig.getMovieApiBaseUrl()).create(MovieApi.class);
+    public MovieApi provideMovieApi(Context context) {
+        return buildRetrofit(buildHttpClient(context), MovieServiceConfig.getMovieApiBaseUrl()).create(MovieApi.class);
     }
 
     private Retrofit buildRetrofit(OkHttpClient client, String baseUrl) {
@@ -44,7 +38,7 @@ public class NetworkModule {
                 .build();
     }
 
-    private OkHttpClient buildHttpClient() {
+    private OkHttpClient buildHttpClient(Context context) {
         return new OkHttpClient.Builder()
                 .addInterceptor(new MovieParameterInterceptor())
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
