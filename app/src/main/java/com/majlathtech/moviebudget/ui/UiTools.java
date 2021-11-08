@@ -23,7 +23,7 @@ public class UiTools {
     public static String exposeErrorText(@NonNull Context context, @StringRes int resourceId, @Nullable String errorCode) {
         String result;
         try {
-            result = context.getString(resourceId) + context.getString(R.string.error_code_with_value).replace("{code}", errorCode);
+            result = context.getString(resourceId) + context.getString(R.string.error_code_with_value).replace("{code}", errorCode != null ? errorCode : "?");
         } catch (Exception e) {
             result = context.getString(resourceId);
         }
