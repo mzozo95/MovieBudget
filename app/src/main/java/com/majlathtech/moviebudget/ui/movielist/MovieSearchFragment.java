@@ -94,13 +94,13 @@ public class MovieSearchFragment extends Fragment implements MovieSearchItemAdap
     }
 
     private void showMovies(List<MovieDetail> movieList) {
-        if (movieList.size() != 0) {
-            binding.tvEmpty.setVisibility(View.GONE);
-            movieAdapter.setListItems(movieList);
-        } else {
+        if (movieList.isEmpty()) {
             binding.tvEmpty.setText(R.string.no_items_to_show);
             binding.tvEmpty.setTextColor(getResources().getColor(R.color.defaultTextColor, null));
             binding.tvEmpty.setVisibility(View.VISIBLE);
+        } else {
+            binding.tvEmpty.setVisibility(View.GONE);
+            movieAdapter.setListItems(movieList);
         }
     }
 
