@@ -16,6 +16,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Action;
 
 import static com.majlathtech.moviebudget.ui.error.UiError.Type.ErrorWithCode;
 
@@ -49,6 +50,19 @@ public class MovieFavoriteViewModel extends ViewModel {
         }, throwable -> {
             showError(R.string.unexpected_error_happened, FavoriteDatabaseErrorCodes.COULD_NOT_GET_ALL, throwable);
         });
+    }
+
+
+    public void delete(MovieDetail element) {
+        loading.setValue(true);
+        RxTools.performTask(disposable,
+                favoriteDao.delete(element),
+                () -> {
+                    loading.setValue(false);
+                    fetchFavorites();
+                }, throwable -> {
+                    showError(R.string.unexpected_error_happened, FavoriteDatabaseErrorCodes.COULD_REMOVE_ITEM, throwable);
+                });
     }
 
     private void showError(@StringRes int resourceId, String errorCode, Throwable throwable) {

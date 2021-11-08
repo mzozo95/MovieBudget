@@ -46,7 +46,7 @@ public class MovieFavoritesFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         binding.recyclerView.setLayoutManager(llm);
-        movieAdapter = new MovieFavoritesItemAdapter();
+        movieAdapter = new MovieFavoritesItemAdapter(viewModel);
         binding.recyclerView.setAdapter(movieAdapter);
         return binding.getRoot();
     }

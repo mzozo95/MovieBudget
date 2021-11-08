@@ -17,7 +17,12 @@ import com.majlathtech.moviebudget.ui.UiTools;
 import java.util.List;
 
 public class MovieFavoritesItemAdapter extends RecyclerView.Adapter<MovieFavoritesItemAdapter.MovieViewHolder> {
+    private MovieFavoriteViewModel viewModel;
     private List<MovieDetail> items;
+
+    public MovieFavoritesItemAdapter(MovieFavoriteViewModel viewModel){
+        this.viewModel = viewModel;
+    }
 
     public void setListItems(List<MovieDetail> list) {
         items = list;
@@ -48,6 +53,8 @@ public class MovieFavoritesItemAdapter extends RecyclerView.Adapter<MovieFavorit
         holder.binding.tvTitle.setText(movie.getTitle());
         holder.binding.tvBudget.setText(String.format(context.getString(R.string.money_format), movie.getBudget()));
         holder.binding.cbFavorite.setVisibility(View.GONE);
+        holder.binding.ivDelete.setVisibility(View.VISIBLE);
+        holder.binding.ivDelete.setOnClickListener(v -> viewModel.delete(movie));
         UiTools.loadImage(holder.binding.ivPoster, MovieTools.generatePosterImageUrl(movie));
     }
 
