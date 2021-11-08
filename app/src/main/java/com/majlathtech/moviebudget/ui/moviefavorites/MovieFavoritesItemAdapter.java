@@ -31,7 +31,7 @@ public class MovieFavoritesItemAdapter extends RecyclerView.Adapter<MovieFavorit
 
     @NonNull
     @Override
-    public MovieViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         ItemMovieDetailBinding binding =
                 ItemMovieDetailBinding.inflate(
                         LayoutInflater.from(viewGroup.getContext()),

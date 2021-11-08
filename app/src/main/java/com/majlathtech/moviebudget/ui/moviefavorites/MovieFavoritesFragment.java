@@ -39,7 +39,7 @@ public class MovieFavoritesFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentMovieFavoritesBinding.inflate(getLayoutInflater());
 
         binding.recyclerView.setHasFixedSize(true);
@@ -65,7 +65,7 @@ public class MovieFavoritesFragment extends Fragment {
     }
 
     public void showFavorites(List<MovieDetail> favoriteMovieElements) {
-        if (favoriteMovieElements != null && favoriteMovieElements.size() > 0) {
+        if (favoriteMovieElements != null && !favoriteMovieElements.isEmpty()) {
             binding.tvEmpty.setVisibility(View.GONE);
             movieAdapter.setListItems(favoriteMovieElements);
         } else {
