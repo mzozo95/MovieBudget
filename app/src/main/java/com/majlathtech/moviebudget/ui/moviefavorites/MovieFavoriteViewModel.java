@@ -33,12 +33,6 @@ public class MovieFavoriteViewModel extends ViewModel {
         this.favoriteDao = favoriteDao;
     }
 
-    @Override
-    protected void onCleared() {
-        disposable.dispose();
-        super.onCleared();
-    }
-
     public MutableLiveData<List<MovieDetail>> getFavorites() {
         return favorites;
     }
@@ -61,5 +55,11 @@ public class MovieFavoriteViewModel extends ViewModel {
         loading.setValue(false);
         throwable.printStackTrace();
         error.setValue(new UiError(ErrorWithCode, resourceId, errorCode));
+    }
+
+    @Override
+    protected void onCleared() {
+        disposable.dispose();
+        super.onCleared();
     }
 }

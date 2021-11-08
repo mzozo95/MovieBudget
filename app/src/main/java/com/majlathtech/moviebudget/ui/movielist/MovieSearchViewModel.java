@@ -42,12 +42,6 @@ public class MovieSearchViewModel extends ViewModel {
         this.favoriteDao = favoriteDao;
     }
 
-    @Override
-    protected void onCleared() {
-        disposable.dispose();
-        super.onCleared();
-    }
-
     public MutableLiveData<List<MovieDetail>> getMovies() {
         return movies;
     }
@@ -107,5 +101,11 @@ public class MovieSearchViewModel extends ViewModel {
         } else {
             error.setValue(new UiError(ErrorWithCode, resourceId, errorCode));
         }
+    }
+
+    @Override
+    protected void onCleared() {
+        disposable.dispose();
+        super.onCleared();
     }
 }
