@@ -31,6 +31,7 @@ public class MovieSearchItemAdapter extends RecyclerView.Adapter<MovieSearchItem
 
     public void setFavorites(Set<MovieDetail> favorites) {
         this.favorites = favorites;
+        notifyDataSetChanged();
     }
 
     public void setListener(OnItemChangedListener listener) {

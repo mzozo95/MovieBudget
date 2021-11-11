@@ -26,6 +26,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.rxjava3.disposables.Disposable;
+
 import static com.majlathtech.moviebudget.MovieBudgetApplication.injector;
 
 public class MovieSearchFragment extends Fragment implements MovieSearchItemAdapter.OnItemChangedListener {
@@ -35,6 +37,7 @@ public class MovieSearchFragment extends Fragment implements MovieSearchItemAdap
 
     MovieSearchItemAdapter movieAdapter;
     FragmentMovieSearchBinding binding;
+    Disposable favoriteSubsDisposable;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -67,7 +70,12 @@ public class MovieSearchFragment extends Fragment implements MovieSearchItemAdap
         });
 
         observableViewModel();
+
+        //in case a favorite is changed in the Favorites screen, that will fire an event on favoritesChanged, note: onResume / onStart is not called here when favorites screen is popped
         viewModel.fetchFavorites();
+        if (getActivity() instanceof MainActivity) {
+            favoriteSubsDisposable = ((MainActivity) getActivity()).favoritesChanged.subscribe(o -> viewModel.fetchFavorites());
+        }
 
         return binding.getRoot();
     }
@@ -143,6 +151,9 @@ public class MovieSearchFragment extends Fragment implements MovieSearchItemAdap
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (favoriteSubsDisposable != null) {
+            favoriteSubsDisposable.dispose();
+        }
         binding = null;
     }
 }

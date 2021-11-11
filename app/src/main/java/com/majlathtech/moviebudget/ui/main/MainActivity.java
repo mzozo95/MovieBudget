@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.jakewharton.rxrelay3.PublishRelay;
 import com.majlathtech.moviebudget.R;
 import com.majlathtech.moviebudget.ui.moviefavorites.MovieFavoritesFragment;
 import com.majlathtech.moviebudget.ui.movielist.MovieSearchFragment;
@@ -15,6 +16,8 @@ public class MainActivity extends FragmentActivity {
     public static final String SEARCH_SCREEN = "SEARCH_SCREEN";
     public static final String FAVORITE_SCREEN = "FAVORITE_SCREEN";
     private String currentDisplayedFragment = SEARCH_SCREEN;
+    //Notify components in this activity if favorites changed:
+    public final PublishRelay<Object> favoritesChanged = PublishRelay.create();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

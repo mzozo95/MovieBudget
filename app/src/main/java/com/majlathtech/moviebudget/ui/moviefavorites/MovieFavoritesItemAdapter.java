@@ -17,7 +17,7 @@ import com.majlathtech.moviebudget.ui.UiTools;
 import java.util.List;
 
 public class MovieFavoritesItemAdapter extends RecyclerView.Adapter<MovieFavoritesItemAdapter.MovieViewHolder> {
-    private MovieFavoriteViewModel viewModel;
+    private final MovieFavoriteViewModel viewModel;
     private List<MovieDetail> items;
 
     public MovieFavoritesItemAdapter(MovieFavoriteViewModel viewModel){

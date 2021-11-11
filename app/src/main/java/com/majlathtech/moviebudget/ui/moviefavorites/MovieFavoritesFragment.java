@@ -17,6 +17,7 @@ import com.majlathtech.moviebudget.databinding.FragmentMovieFavoritesBinding;
 import com.majlathtech.moviebudget.network.model.MovieDetail;
 import com.majlathtech.moviebudget.ui.UiTools;
 import com.majlathtech.moviebudget.ui.error.UiError;
+import com.majlathtech.moviebudget.ui.main.MainActivity;
 
 import java.util.List;
 
@@ -71,6 +72,10 @@ public class MovieFavoritesFragment extends Fragment {
         } else {
             binding.tvEmpty.setText(R.string.no_favorites_to_show);
             binding.tvEmpty.setVisibility(View.VISIBLE);
+        }
+
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).favoritesChanged.accept(true);
         }
     }
 
