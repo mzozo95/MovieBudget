@@ -13,14 +13,17 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -102,7 +105,6 @@ public class MovieSearchViewModelTest {
         verify(favoritesObserver).onChanged(data);
     }
 
-
     //Search movies
 
     @Test
@@ -129,7 +131,7 @@ public class MovieSearchViewModelTest {
     }
 
     @Test
-    public void testSearchMovieHandlesNullInput() {
+    public void testSearchMovieNullInput() {
         viewModel.getMovies().observeForever(moviesObserver);
 
         viewModel.searchMovie(null);
@@ -138,7 +140,7 @@ public class MovieSearchViewModelTest {
     }
 
     @Test
-    public void testSearchMovieHandlesEmptyInput() {
+    public void testSearchMovieEmptyInput() {
         viewModel.getMovies().observeForever(moviesObserver);
 
         viewModel.searchMovie("");
@@ -147,7 +149,7 @@ public class MovieSearchViewModelTest {
     }
 
     @Test
-    public void testSearchMovieHandlesCallsMovieList() {
+    public void testSearchMovieSuccess() {
         List<MovieDetail> data = new ArrayList<>();
         data.add(new MovieDetail());
         data.add(new MovieDetail());
@@ -157,5 +159,31 @@ public class MovieSearchViewModelTest {
         viewModel.searchMovie("someTitle");
 
         verify(moviesObserver).onChanged(data);
+    }
+
+    @Test
+    public void testAddFavorites() {
+        MovieDetail data = new MovieDetail();
+        data.setId(12);
+        when(favoriteDao.insertAll(any())).thenReturn(Completable.complete());
+        ArgumentCaptor<MovieDetail> movieCaptor = ArgumentCaptor.forClass(MovieDetail.class);
+
+        viewModel.addToFavorites(data);
+
+        verify(favoriteDao).insertAll(movieCaptor.capture());
+        assertEquals(movieCaptor.getValue().getId(), 12);
+    }
+
+    @Test
+    public void testRemoveFavorites() {
+        MovieDetail data = new MovieDetail();
+        data.setId(12);
+        when(favoriteDao.delete(any())).thenReturn(Completable.complete());
+        ArgumentCaptor<MovieDetail> movieCaptor = ArgumentCaptor.forClass(MovieDetail.class);
+
+        viewModel.removeFromFavorites(data);
+
+        verify(favoriteDao).delete(movieCaptor.capture());
+        assertEquals(movieCaptor.getValue().getId(), 12);
     }
 }

@@ -12,7 +12,6 @@ import com.majlathtech.moviebudget.network.service.MovieServiceErrorCodes;
 import com.majlathtech.moviebudget.network.service.RxSingleSchedulers;
 import com.majlathtech.moviebudget.repository.FavoriteDao;
 import com.majlathtech.moviebudget.repository.FavoriteDatabaseErrorCodes;
-import com.majlathtech.moviebudget.ui.RxTools;
 import com.majlathtech.moviebudget.ui.error.NetworkError;
 import com.majlathtech.moviebudget.ui.error.UiError;
 
@@ -29,8 +28,8 @@ import static com.majlathtech.moviebudget.ui.error.UiError.Type.ErrorWithCode;
 public class MovieSearchViewModel extends ViewModel {
     private final MovieService movieService;
     private final FavoriteDao favoriteDao;
-    private final RxSingleSchedulers rxSingleSchedulers;
 
+    private final RxSingleSchedulers rxSingleSchedulers;
     private final CompositeDisposable disposable = new CompositeDisposable();
 
     private final MutableLiveData<List<MovieDetail>> movies = new MutableLiveData<>();
@@ -62,11 +61,19 @@ public class MovieSearchViewModel extends ViewModel {
     }
 
     public void addToFavorites(@NonNull MovieDetail... favoriteMovieElements) {
-        RxTools.performTask(disposable, favoriteDao.insertAll(favoriteMovieElements), throwable -> showError(R.string.unexpected_error_happened, FavoriteDatabaseErrorCodes.COULD_INSERT_ITEM, throwable));
+        disposable.add(favoriteDao.insertAll(favoriteMovieElements)
+                .compose(rxSingleSchedulers.applyCompletableSchedulers())
+                .subscribe(() -> {
+                        },
+                        throwable -> showError(R.string.unexpected_error_happened, FavoriteDatabaseErrorCodes.COULD_INSERT_ITEM, throwable)));
     }
 
     public void removeFromFavorites(@NonNull MovieDetail favoriteMovieElement) {
-        RxTools.performTask(disposable, favoriteDao.delete(favoriteMovieElement), throwable -> showError(R.string.unexpected_error_happened, FavoriteDatabaseErrorCodes.COULD_REMOVE_ITEM, throwable));
+        disposable.add(favoriteDao.delete(favoriteMovieElement)
+                .compose(rxSingleSchedulers.applyCompletableSchedulers())
+                .subscribe(() -> {
+                        },
+                        throwable -> showError(R.string.unexpected_error_happened, FavoriteDatabaseErrorCodes.COULD_REMOVE_ITEM, throwable)));
     }
 
     public void fetchFavorites() {
