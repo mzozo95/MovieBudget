@@ -88,14 +88,16 @@ public class MovieSearchViewModel extends ViewModel {
         }
 
         loading.setValue(true);
-        RxTools.performTask(disposable, movieService.searchMovie(movieTitle),
-                movieDetails -> {
-                    loading.setValue(false);
-                    movies.setValue(movieDetails);
-                },
-                throwable -> {
-                    showError(R.string.unexpected_error_happened, MovieServiceErrorCodes.COULD_NOT_PERFORM_SEARCH, throwable);
-                });
+        disposable.add(movieService.searchMovie(movieTitle)
+                .compose(rxSingleSchedulers.applySchedulers())
+                .subscribe(
+                        movieDetails -> {
+                            loading.setValue(false);
+                            movies.setValue(movieDetails);
+                        },
+                        throwable -> {
+                            showError(R.string.unexpected_error_happened, MovieServiceErrorCodes.COULD_NOT_PERFORM_SEARCH, throwable);
+                        }));
     }
 
     private void showError(@StringRes int resourceId, String errorCode, Throwable throwable) {

@@ -44,12 +44,16 @@ public class MovieSearchViewModelTest {
     @Mock
     Observer<List<MovieDetail>> favoritesObserver;
     @Mock
+    Observer<List<MovieDetail>> moviesObserver;
+    @Mock
     Observer<UiError> errorObserver;
 
     @Before
     public void init() {
         viewModel = new MovieSearchViewModel(movieService, favoriteDao, RxSingleSchedulers.TEST_SCHEDULER);
     }
+
+    //Fetch favorites
 
     @Test
     public void testFetchFavoritesShowsAndHidesLoading() {
@@ -96,5 +100,62 @@ public class MovieSearchViewModelTest {
         viewModel.fetchFavorites();
 
         verify(favoritesObserver).onChanged(data);
+    }
+
+
+    //Search movies
+
+    @Test
+    public void testSearchMovieShowsAndHidesLoading() {
+        when(movieService.searchMovie(any())).thenReturn(Single.just(new ArrayList<>()));
+        viewModel.getLoading().observeForever(loadingObserver);
+
+        viewModel.searchMovie("title");
+
+        assertTrue(viewModel.getLoading().hasObservers());
+        verify(loadingObserver).onChanged(true);
+        verify(loadingObserver).onChanged(false);
+    }
+
+    @Test
+    public void testSearchMovieShowsAndHidesLoadingOnError() {
+        when(movieService.searchMovie(any())).thenReturn(Single.error(new Throwable("Error path")));
+        viewModel.getLoading().observeForever(loadingObserver);
+
+        viewModel.searchMovie("title");
+
+        verify(loadingObserver).onChanged(true);
+        verify(loadingObserver).onChanged(false);
+    }
+
+    @Test
+    public void testSearchMovieHandlesNullInput() {
+        viewModel.getMovies().observeForever(moviesObserver);
+
+        viewModel.searchMovie(null);
+
+        verify(moviesObserver).onChanged(new ArrayList<>());
+    }
+
+    @Test
+    public void testSearchMovieHandlesEmptyInput() {
+        viewModel.getMovies().observeForever(moviesObserver);
+
+        viewModel.searchMovie("");
+
+        verify(moviesObserver).onChanged(new ArrayList<>());
+    }
+
+    @Test
+    public void testSearchMovieHandlesCallsMovieList() {
+        List<MovieDetail> data = new ArrayList<>();
+        data.add(new MovieDetail());
+        data.add(new MovieDetail());
+        when(movieService.searchMovie(any())).thenReturn(Single.just(data));
+        viewModel.getMovies().observeForever(moviesObserver);
+
+        viewModel.searchMovie("someTitle");
+
+        verify(moviesObserver).onChanged(data);
     }
 }
