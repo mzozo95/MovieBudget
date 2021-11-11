@@ -5,7 +5,7 @@ import androidx.lifecycle.Observer;
 
 import com.majlathtech.moviebudget.network.model.MovieDetail;
 import com.majlathtech.moviebudget.network.service.MovieService;
-import com.majlathtech.moviebudget.network.service.RxSingleSchedulers;
+import com.majlathtech.moviebudget.network.service.RxSchedulers;
 import com.majlathtech.moviebudget.repository.FavoriteDao;
 import com.majlathtech.moviebudget.ui.error.UiError;
 
@@ -31,7 +31,6 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MovieSearchViewModelTest {
-
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
 
@@ -53,7 +52,7 @@ public class MovieSearchViewModelTest {
 
     @Before
     public void init() {
-        viewModel = new MovieSearchViewModel(movieService, favoriteDao, RxSingleSchedulers.TEST_SCHEDULER);
+        viewModel = new MovieSearchViewModel(movieService, favoriteDao, RxSchedulers.TEST_SCHEDULER);
     }
 
     //Fetch favorites
