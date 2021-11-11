@@ -6,6 +6,7 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.majlathtech.moviebudget.network.api.MovieApi;
 import com.majlathtech.moviebudget.network.interceptor.MovieParameterInterceptor;
 import com.majlathtech.moviebudget.network.service.MovieServiceConfig;
+import com.majlathtech.moviebudget.network.service.RxSingleSchedulers;
 import com.readystatesoftware.chuck.ChuckInterceptor;
 
 import java.io.File;
@@ -23,6 +24,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class NetworkModule {
+    @Provides
+    @Singleton
+    public RxSingleSchedulers provideScheduler(){
+        return RxSingleSchedulers.DEFAULT;
+    }
+
     @Provides
     @Singleton
     public MovieApi provideMovieApi(Context context) {

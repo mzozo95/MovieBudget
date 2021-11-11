@@ -9,6 +9,7 @@ import com.majlathtech.moviebudget.R;
 import com.majlathtech.moviebudget.network.model.MovieDetail;
 import com.majlathtech.moviebudget.network.service.MovieService;
 import com.majlathtech.moviebudget.network.service.MovieServiceErrorCodes;
+import com.majlathtech.moviebudget.network.service.RxSingleSchedulers;
 import com.majlathtech.moviebudget.repository.FavoriteDao;
 import com.majlathtech.moviebudget.repository.FavoriteDatabaseErrorCodes;
 import com.majlathtech.moviebudget.ui.RxTools;
@@ -28,6 +29,7 @@ import static com.majlathtech.moviebudget.ui.error.UiError.Type.ErrorWithCode;
 public class MovieSearchViewModel extends ViewModel {
     private final MovieService movieService;
     private final FavoriteDao favoriteDao;
+    private final RxSingleSchedulers rxSingleSchedulers;
 
     private final CompositeDisposable disposable = new CompositeDisposable();
 
@@ -37,9 +39,10 @@ public class MovieSearchViewModel extends ViewModel {
     private final MutableLiveData<UiError> error = new MutableLiveData<>();
 
     @Inject
-    public MovieSearchViewModel(MovieService movieService, FavoriteDao favoriteDao) {
+    public MovieSearchViewModel(MovieService movieService, FavoriteDao favoriteDao, RxSingleSchedulers rxSingleSchedulers) {
         this.movieService = movieService;
         this.favoriteDao = favoriteDao;
+        this.rxSingleSchedulers = rxSingleSchedulers;
     }
 
     public MutableLiveData<List<MovieDetail>> getMovies() {
@@ -68,12 +71,14 @@ public class MovieSearchViewModel extends ViewModel {
 
     public void fetchFavorites() {
         loading.setValue(true);
-        RxTools.performTask(disposable, favoriteDao.getAll(),
-                favoriteResult -> {
-                    loading.setValue(false);
-                    favorites.setValue(favoriteResult);
-                },
-                throwable -> showError(R.string.unexpected_error_happened, FavoriteDatabaseErrorCodes.COULD_NOT_GET_ALL, throwable));
+        disposable.add(favoriteDao.getAll()
+                .compose(rxSingleSchedulers.applySchedulers())
+                .subscribe(
+                        favoriteResult -> {
+                            loading.setValue(false);
+                            favorites.setValue(favoriteResult);
+                        },
+                        throwable -> showError(R.string.unexpected_error_happened, FavoriteDatabaseErrorCodes.COULD_NOT_GET_ALL, throwable)));
     }
 
     public void searchMovie(final String movieTitle) {
